@@ -1,0 +1,134 @@
+.netflix-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+  overflow: hidden;
+  background: radial-gradient(120% 120% at 50% 10%, rgba(229, 9, 20, 0.45), transparent 60%),
+    radial-gradient(120% 180% at 50% 80%, rgba(10, 12, 26, 0.95), rgba(6, 7, 14, 0.95));
+}
+
+.netflix-container::before {
+  content: '';
+  position: absolute;
+  inset: -40%;
+  background: conic-gradient(
+    from 90deg at 50% 50%,
+    rgba(229, 9, 20, 0.25),
+    transparent 55%,
+    rgba(25, 176, 255, 0.2)
+  );
+  filter: blur(140px);
+  opacity: 0.7;
+  animation: rotateGlow 16s linear infinite;
+}
+
+.netflix-logo {
+  position: relative;
+  display: inline-flex;
+  padding: clamp(1rem, 4vw, 3rem);
+  opacity: 0;
+  transform: scale(0.82);
+  filter: drop-shadow(0 34px 80px rgba(0, 0, 0, 0.55));
+}
+
+.netflix-logo::before {
+  content: '';
+  position: absolute;
+  inset: 10% 8%;
+  background: radial-gradient(60% 120% at 50% 20%, rgba(255, 255, 255, 0.12), transparent 80%);
+  opacity: 0;
+  transform: translateY(20px) scale(0.8);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: none;
+}
+
+.netflix-logo.animate::before {
+  opacity: 1;
+  transform: translateY(0) scale(1.05);
+}
+
+.netflix-logo::after {
+  content: '';
+  position: absolute;
+  inset: -40% -60%;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    rgba(229, 9, 20, 0),
+    rgba(229, 9, 20, 0.18),
+    rgba(255, 255, 255, 0.25),
+    rgba(229, 9, 20, 0)
+  );
+  opacity: 0;
+  transform: rotate(-30deg) scale(0.8);
+  transition: opacity 0.6s ease, transform 0.6s ease;
+  pointer-events: none;
+  mix-blend-mode: screen;
+}
+
+.netflix-logo.animate::after {
+  opacity: 1;
+  transform: rotate(8deg) scale(1.05);
+  animation: sweep 2.4s ease-in-out 0.4s forwards;
+}
+
+.netflix-logo img {
+  width: clamp(280px, 60vw, 620px);
+  height: auto;
+  display: block;
+}
+
+.netflix-logo.animate {
+  animation: logoIntro 1.4s ease forwards, logoExit 3.2s 1.4s ease-in forwards;
+}
+
+@keyframes logoIntro {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  70% {
+    opacity: 1;
+    transform: scale(1.05);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes logoExit {
+  0% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: scale(3.2);
+  }
+}
+
+@keyframes sweep {
+  0% {
+    opacity: 0.2;
+    transform: rotate(-10deg) scale(1) translateX(-20%);
+  }
+  50% {
+    opacity: 0.6;
+    transform: rotate(4deg) scale(1.05) translateX(15%);
+  }
+  100% {
+    opacity: 0;
+    transform: rotate(12deg) scale(1.1) translateX(40%);
+  }
+}
+
+@keyframes rotateGlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}

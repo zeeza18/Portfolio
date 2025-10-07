@@ -1,0 +1,91 @@
+.continue-watching-row {
+  padding: clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 6vw, 4rem) clamp(2.5rem, 6vw, 4rem);
+  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+.row-title {
+  font-size: clamp(1.3rem, 2.4vw, 2rem);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.card-row {
+  display: flex;
+  gap: clamp(1rem, 3vw, 1.5rem);
+  overflow-x: auto;
+  padding-bottom: 0.75rem;
+  scrollbar-width: none;
+}
+
+.card-row::-webkit-scrollbar {
+  display: none;
+}
+
+.pick-card {
+  position: relative;
+  flex: 0 0 auto;
+  width: clamp(180px, 32vw, 260px);
+  aspect-ratio: 16 / 9;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(24, 26, 40, 0.55);
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border 0.35s ease;
+}
+
+.pick-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 45%, rgba(0, 0, 0, 0.85) 100%);
+  opacity: 0.75;
+  transition: opacity 0.35s ease;
+  z-index: 1;
+}
+
+.pick-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: rgba(229, 9, 20, 0.35);
+  box-shadow: 0 26px 56px rgba(229, 9, 20, 0.22);
+}
+
+.pick-card:hover::before {
+  opacity: 0.55;
+}
+
+.pick-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+  transform: scale(1.03);
+  transition: transform 0.35s ease;
+}
+
+.pick-card:hover .pick-image {
+  transform: scale(1.08);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-start;
+  padding: 1.2rem;
+  z-index: 2;
+}
+
+.pick-label {
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  color: var(--color-text);
+  text-transform: uppercase;
+}

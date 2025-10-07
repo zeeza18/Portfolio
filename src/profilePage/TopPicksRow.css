@@ -1,0 +1,111 @@
+.top-picks-row {
+  padding: clamp(1.5rem, 4vw, 3rem) clamp(1.5rem, 6vw, 4rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.75rem;
+}
+
+.row-title {
+  font-size: clamp(1.4rem, 2.6vw, 2.2rem);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  margin: 0;
+  color: var(--color-text);
+}
+
+.card-row {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(240px, 1fr);
+  gap: clamp(1rem, 3vw, 1.75rem);
+  overflow-x: auto;
+  padding-bottom: 0.75rem;
+  scrollbar-width: none;
+}
+
+.card-row::-webkit-scrollbar {
+  display: none;
+}
+
+.pick-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  min-height: 220px;
+  background: rgba(20, 22, 34, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.4s ease, box-shadow 0.4s ease, border 0.4s ease;
+  isolation: isolate;
+}
+
+.pick-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 40%, rgba(0, 0, 0, 0.75) 100%);
+  z-index: 1;
+  opacity: 0.8;
+  transition: opacity 0.4s ease;
+}
+
+.pick-card::after {
+  content: '';
+  position: absolute;
+  inset: -40% -20%;
+  background: radial-gradient(60% 60% at 50% 0%, rgba(229, 9, 20, 0.36), transparent 75%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  z-index: 0;
+}
+
+.pick-card:hover {
+  transform: translateY(-10px) scale(1.02);
+  border-color: rgba(229, 9, 20, 0.35);
+  box-shadow: 0 32px 70px rgba(229, 9, 20, 0.28);
+}
+
+.pick-card:hover::before {
+  opacity: 0.55;
+}
+
+.pick-card:hover::after {
+  opacity: 1;
+}
+
+.pick-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  position: absolute;
+  inset: 0;
+  transform: scale(1.02);
+  transition: transform 0.4s ease;
+}
+
+.pick-card:hover .pick-image {
+  transform: scale(1.08);
+}
+
+.overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  padding: 1.6rem;
+  z-index: 2;
+}
+
+.pick-label {
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--color-text);
+}
+
+@media (max-width: 768px) {
+  .pick-card {
+    min-height: 200px;
+  }
+}

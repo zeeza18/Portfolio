@@ -1,0 +1,41 @@
+.more-info-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.85rem 1.9rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(24, 26, 40, 0.72);
+  color: var(--color-text);
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: transform 0.3s ease, box-shadow 0.3s ease, background 0.3s ease;
+  box-shadow: 0 16px 38px rgba(5, 6, 14, 0.45);
+}
+
+.more-info-button:hover {
+  transform: translateY(-3px);
+  background: rgba(36, 38, 55, 0.85);
+  box-shadow: 0 20px 48px rgba(7, 9, 20, 0.6);
+}
+
+.icon-container {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-container svg {
+  width: 18px;
+  height: 18px;
+}
+
+.spacer {
+  display: none;
+}
+
+.label {
+  font-size: 0.85rem;
+}

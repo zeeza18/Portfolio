@@ -1,0 +1,60 @@
+.work-permit-container {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 6vw, 4rem);
+}
+
+.work-permit-card {
+  position: relative;
+  max-width: 620px;
+  width: 100%;
+  padding: clamp(2.4rem, 5vw, 3.2rem);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(140deg, rgba(18, 19, 32, 0.86), rgba(18, 19, 32, 0.6));
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  box-shadow: var(--shadow-soft);
+  color: var(--color-text);
+  backdrop-filter: blur(14px);
+  overflow: hidden;
+}
+
+.work-permit-card::before {
+  content: '';
+  position: absolute;
+  inset: -30% -10% auto -10%;
+  height: 60%;
+  background: radial-gradient(80% 80% at 20% 20%, rgba(229, 9, 20, 0.35), transparent 70%);
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+.work-permit-headline {
+  position: relative;
+  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  margin: 0 0 1.5rem 0;
+}
+
+.work-permit-summary {
+  position: relative;
+  font-size: clamp(1rem, 2vw, 1.1rem);
+  line-height: 1.8;
+  color: var(--color-muted);
+  margin: 0;
+}
+
+.work-permit-summary strong {
+  color: var(--color-primary);
+}
+
+.additional-info {
+  position: relative;
+  margin-top: 1.6rem;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.72);
+  letter-spacing: 0.02em;
+}

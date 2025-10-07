@@ -1,0 +1,103 @@
+.skills-container {
+  padding: clamp(5rem, 9vw, 7rem) clamp(1.5rem, 6vw, 5rem);
+  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  align-items: center;
+}
+
+.skills-title {
+  font-size: clamp(1.8rem, 3vw, 2.6rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin: 0;
+}
+
+.skill-category {
+  width: 100%;
+  max-width: 1080px;
+}
+
+.category-title {
+  font-size: clamp(1.4rem, 2.6vw, 2rem);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--color-text);
+  margin: 0 0 1.4rem 0;
+}
+
+.skills-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: clamp(1.2rem, 3vw, 1.8rem);
+}
+
+.skill-card {
+  position: relative;
+  padding: 1.8rem;
+  border-radius: var(--radius-md);
+  background: rgba(18, 19, 32, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow-soft);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border 0.35s ease;
+  overflow: hidden;
+}
+
+.skill-card::before {
+  content: '';
+  position: absolute;
+  inset: -30% -10% auto -10%;
+  height: 60%;
+  background: radial-gradient(80% 80% at 30% 30%, rgba(229, 9, 20, 0.25), transparent 75%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.skill-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(229, 9, 20, 0.35);
+  box-shadow: 0 28px 60px rgba(229, 9, 20, 0.22);
+}
+
+.skill-card:hover::before {
+  opacity: 1;
+}
+
+.icon {
+  font-size: 2.1rem;
+  color: var(--color-primary);
+  display: inline-flex;
+}
+
+.skill-name {
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  display: inline-flex;
+  gap: 0.08em;
+  flex-wrap: wrap;
+}
+
+.letter {
+  opacity: 0;
+  transform: translateY(10px);
+  animation: letterDrop 0.6s forwards ease;
+}
+
+.skill-description {
+  margin: 0;
+  color: var(--color-muted);
+  line-height: 1.6;
+  font-size: 0.92rem;
+}
+
+@keyframes letterDrop {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

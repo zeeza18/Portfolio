@@ -1,0 +1,76 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@500&display=swap');
+
+:root {
+  --color-bg: #07070d;
+  --color-bg-alt: #11121f;
+  --color-surface: rgba(24, 26, 40, 0.72);
+  --color-surface-strong: rgba(24, 26, 40, 0.92);
+  --color-primary: #e50914;
+  --color-primary-soft: rgba(229, 9, 20, 0.24);
+  --color-secondary: #19b0ff;
+  --color-text: #f7f8fd;
+  --color-muted: rgba(247, 248, 253, 0.65);
+  --shadow-strong: 0 24px 60px rgba(5, 6, 14, 0.65);
+  --shadow-soft: 0 12px 36px rgba(5, 6, 14, 0.45);
+  --radius-sm: 12px;
+  --radius-md: 18px;
+  --radius-lg: 26px;
+  --radius-pill: 999px;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: 'Inter', 'Netflix Sans', 'Helvetica Neue', Segoe UI, Roboto, Ubuntu, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  background: radial-gradient(125% 125% at 50% 0%, #17182c 0%, #07070d 55%, #040408 100%);
+  color: var(--color-text);
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(
+      80% 80% at 20% 0%,
+      rgba(229, 9, 20, 0.18),
+      transparent 65%
+    ),
+    radial-gradient(60% 60% at 80% 10%, rgba(25, 176, 255, 0.16), transparent 70%);
+  filter: blur(90px);
+  opacity: 0.9;
+  pointer-events: none;
+  z-index: -2;
+}
+
+body::after {
+  content: '';
+  position: fixed;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg width='160' height='160' viewBox='0 0 160 160' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' opacity='0.08'%3E%3Cpath d='M0 159.5H160M.5 0v160' stroke='%23FFFFFF' stroke-width='.5'/%3E%3C/g%3E%3C/svg%3E");
+  mix-blend-mode: screen;
+  pointer-events: none;
+  z-index: -1;
+}
+
+code {
+  font-family: 'Space Grotesk', Menlo, Monaco, Consolas, 'Courier New', monospace;
+}
+
+a {
+  color: inherit;
+}
+
+.content {
+  padding-top: 5rem;
+  min-height: 100vh;
+}

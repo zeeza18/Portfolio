@@ -1,0 +1,115 @@
+.projects-container {
+  padding: clamp(5rem, 9vw, 7rem) clamp(1.5rem, 6vw, 5rem) clamp(6rem, 10vw, 8rem);
+  background: transparent;
+  color: var(--color-text);
+}
+
+.projects-grid {
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 2.5rem);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.project-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background: rgba(18, 19, 32, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow-soft);
+  opacity: 0;
+  transform: translateY(24px);
+  animation: projectReveal 0.6s ease forwards;
+  animation-delay: var(--delay, 0s);
+  display: flex;
+  flex-direction: column;
+}
+
+.project-card::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(85% 85% at 20% 0%, rgba(229, 9, 20, 0.25), transparent 70%);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.project-card:hover::before {
+  opacity: 1;
+}
+
+.project-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 32px 70px rgba(229, 9, 20, 0.25);
+  border-color: rgba(229, 9, 20, 0.35);
+}
+
+.project-image {
+  width: 100%;
+  height: 220px;
+  object-fit: cover;
+  transition: transform 0.4s ease;
+}
+
+.project-card:hover .project-image {
+  transform: scale(1.08);
+}
+
+.project-details {
+  padding: clamp(1.6rem, 4vw, 2.1rem);
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+}
+
+.project-details h3 {
+  font-size: 1.25rem;
+  margin: 0;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.project-details p {
+  margin: 0;
+  color: var(--color-muted);
+  line-height: 1.7;
+  font-size: 0.95rem;
+}
+
+.tech-used {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.tech-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.45rem 0.85rem;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  color: var(--color-text);
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  transition: transform 0.3s ease, background 0.3s ease, border 0.3s ease;
+}
+
+.tech-badge svg {
+  font-size: 1rem;
+}
+
+.tech-badge:hover {
+  transform: translateY(-2px);
+  background: rgba(229, 9, 20, 0.18);
+  border-color: rgba(229, 9, 20, 0.4);
+}
+
+@keyframes projectReveal {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}

@@ -1,0 +1,112 @@
+.music-page {
+  padding: clamp(5rem, 9vw, 7rem) clamp(1.5rem, 6vw, 5rem) clamp(6rem, 10vw, 8rem);
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+  color: var(--color-text);
+}
+
+.quote {
+  font-size: clamp(1.3rem, 2.6vw, 1.9rem);
+  font-style: italic;
+  letter-spacing: 0.03em;
+  max-width: 720px;
+  color: var(--color-muted);
+}
+
+.genre-section,
+.albums-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.genres {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+
+.genre-card {
+  padding: 0.65rem 1.4rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(18, 19, 32, 0.7);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-size: 0.82rem;
+  font-weight: 600;
+  transition: transform 0.3s ease, border 0.3s ease, background 0.3s ease;
+}
+
+.genre-card:hover {
+  transform: translateY(-4px);
+  background: rgba(229, 9, 20, 0.18);
+  border-color: rgba(229, 9, 20, 0.35);
+}
+
+.albums {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: clamp(1.2rem, 3vw, 2rem);
+}
+
+.album-card {
+  position: relative;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(18, 19, 32, 0.78);
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border 0.35s ease;
+}
+
+.album-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 55%, rgba(0, 0, 0, 0.85) 100%);
+  opacity: 0.75;
+  transition: opacity 0.35s ease;
+}
+
+.album-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  border-color: rgba(229, 9, 20, 0.35);
+  box-shadow: 0 28px 60px rgba(229, 9, 20, 0.25);
+}
+
+.album-card:hover::after {
+  opacity: 0.55;
+}
+
+.album-image {
+  width: 100%;
+  height: 260px;
+  object-fit: cover;
+  display: block;
+}
+
+.album-details {
+  position: absolute;
+  inset: auto 0 0;
+  padding: 1.35rem;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  color: var(--color-text);
+}
+
+.album-details h4 {
+  margin: 0;
+  font-size: 1.05rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.album-details p {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: 0.9rem;
+}
