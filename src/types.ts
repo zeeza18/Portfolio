@@ -36,9 +36,13 @@ export interface Project {
 export interface Certification {
   title: string;
   issuer: string;
-  issuedDate: string;
+  issuedDate?: string;
   link: string;
-  iconName: string;
+  iconName?: string;
+  imageUrl?: string;
+  format?: 'image' | 'pdf';
+  topics?: string[];
+  summary?: string;
 }
 
 export interface ContactMe {
@@ -50,6 +54,7 @@ export interface ContactMe {
   linkedinLink: string;
   email: string;
   phoneNumber: string;
+  secondaryEmail?: string;
 }
 
 export interface Skill { 

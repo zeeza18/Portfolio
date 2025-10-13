@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useCallback, useEffect, useRef } from 'react';
 import './PlayButton.css';
+import netflixSound from '../netflix-sound.mp3';
 
 interface PlayButtonProps {
   onClick: () => void;
@@ -7,8 +8,31 @@ interface PlayButtonProps {
 }
 
 const PlayButton: React.FC<PlayButtonProps> = ({ onClick, label = "Play" }) => {
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  useEffect(() => {
+    audioRef.current = new Audio(netflixSound);
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current = null;
+      }
+    };
+  }, []);
+
+  const handleClick = useCallback(() => {
+    const audio = audioRef.current;
+    if (audio) {
+      audio.currentTime = 0;
+      audio.play().catch((error) => {
+        console.warn('Unable to play intro sound.', error);
+      });
+    }
+    onClick();
+  }, [onClick]);
+
   return (
-    <button className="play-button" onClick={onClick} type="button">
+    <button className="play-button" onClick={handleClick} type="button">
       <div className="icon-container">
         <svg
           xmlns="http://www.w3.org/2000/svg"

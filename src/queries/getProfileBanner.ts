@@ -1,4 +1,4 @@
-import { hasDatoCmsCredentials, requestDatoCMS } from './datoCMSClient';
+ï»¿import { hasDatoCmsCredentials, requestDatoCMS } from './datoCMSClient';
 import { ProfileBanner } from '../types';
 
 const GET_PROFILE_BANNER = `
@@ -21,13 +21,13 @@ const FALLBACK_PROFILE_BANNER: ProfileBanner = {
   backgroundImage: {
     url: 'https://images.unsplash.com/photo-1520607162513-77705c0f0d4a?auto=format&fit=crop&w=1600&q=80',
   },
-  headline: 'Mohammed Azeezulla · AI/ML Engineer',
+  headline: 'Mohammed Azeezulla | AI Engineer & Researcher',
   resumeLink: {
-    url: 'https://github.com/zeeza18',
+    url: '/resume.pdf',
   },
   linkedinLink: 'https://www.linkedin.com/in/moazeez/',
   profileSummary:
-    'AI/ML engineer building agentic automation, multimodal analytics, and resilient platforms that turn complex operations into intelligent, reliable systems.',
+    'AI engineer and researcher building agentic automation, multimodal analytics, and resilient platforms that turn complex operations into intelligent, reliable systems.',
 };
 
 export async function getProfileBanner(): Promise<ProfileBanner> {

@@ -1,56 +1,181 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import './TopPicksRow.css';
-import {
-  FaPassport,
-  FaCode,
-  FaBriefcase,
-  FaCertificate,
-  FaHandsHelping,
-  FaProjectDiagram,
-  FaEnvelope,
-  FaMusic,
-  FaBook,
-} from 'react-icons/fa';
+import { FaPassport, FaCode, FaBriefcase, FaCertificate, FaHandsHelping, FaProjectDiagram, FaEnvelope } from 'react-icons/fa';
+import workPermitApproved from '../images/work-permit-approved.png';
+import skillsSoftHard from '../images/skills-soft-hard.png';
+import experienceImage from '../images/experience.png';
+import certificationsImage from '../images/certifications.jpeg';
+import recommendationsImage from '../images/recommendations.png';
+import projectsImage from '../images/projects.png';
+import contactImage from '../images/contact-me.png';
 
-type ProfileType = 'recruiter' | 'developer' | 'stalker' | 'adventurer';
+type ProfileType = 'recruiter' | 'developer' | 'stalker';
+
+type TopPick = {
+  title: string;
+  imgSrc: string;
+  route: string;
+  icon?: React.ReactNode;
+  imgStyle?: React.CSSProperties;
+  cardClassName?: string;
+};
 
 interface TopPicksRowProps {
   profile: ProfileType;
 }
 
-const topPicksConfig = {
+const topPicksConfig: Record<ProfileType, TopPick[]> = {
   recruiter: [
-    { title: "Work Permit", imgSrc: "https://picsum.photos/seed/workpermit/250/200", icon: <FaPassport />, route: "/work-permit" },
-    { title: "Skills", imgSrc: "https://picsum.photos/seed/skills/250/200", icon: <FaCode />, route: "/skills" },
-    { title: "Experience", imgSrc: "https://picsum.photos/seed/workexperience/250/200", icon: <FaBriefcase />, route: "/work-experience" },
-    { title: "Certifications", imgSrc: "https://picsum.photos/seed/certifications/250/200", icon: <FaCertificate />, route: "/certifications" },
-    { title: "Recommendations", imgSrc: "https://picsum.photos/seed/recommendations/250/200", icon: <FaHandsHelping />, route: "/recommendations" },
-    { title: "Projects", imgSrc: "https://picsum.photos/seed/projects/250/200", icon: <FaProjectDiagram />, route: "/projects" },
-    { title: "Contact Me", imgSrc: "https://picsum.photos/seed/contact/250/200", icon: <FaEnvelope />, route: "/contact-me" }
+    {
+      title: "Work Permit",
+      imgSrc: workPermitApproved,
+      icon: <FaPassport />,
+      route: "/work-permit",
+      cardClassName: 'pick-card--warm',
+      imgStyle: { objectPosition: 'center 42%' },
+    },
+    {
+      title: "Skills",
+      imgSrc: skillsSoftHard,
+      icon: <FaCode />,
+      route: "/skills",
+      cardClassName: 'pick-card--neon',
+      imgStyle: { objectPosition: 'center 54%' },
+    },
+    {
+      title: "Experience",
+      imgSrc: experienceImage,
+      icon: <FaBriefcase />,
+      route: "/work-experience",
+      cardClassName: 'pick-card--experience',
+      imgStyle: { objectPosition: 'center 45%' },
+    },
+    {
+      title: "Certifications",
+      imgSrc: certificationsImage,
+      icon: <FaCertificate />,
+      route: "/certifications",
+      cardClassName: 'pick-card--certifications',
+      imgStyle: { objectPosition: 'center 52%' },
+    },
+    {
+      title: "Recommendations",
+      imgSrc: recommendationsImage,
+      icon: <FaHandsHelping />,
+      route: "/recommendations",
+      cardClassName: 'pick-card--recommendations',
+      imgStyle: { objectPosition: 'center 48%' },
+    },
+    {
+      title: "Projects",
+      imgSrc: projectsImage,
+      icon: <FaProjectDiagram />,
+      route: "/projects",
+      cardClassName: 'pick-card--projects',
+      imgStyle: { objectPosition: 'center 55%' },
+    },
+    {
+      title: "Contact Me",
+      imgSrc: contactImage,
+      icon: <FaEnvelope />,
+      route: "/contact-me",
+      cardClassName: 'pick-card--contact',
+      imgStyle: { objectPosition: 'center 42%' },
+    }
   ],
   developer: [
-    { title: "Skills", imgSrc: "https://picsum.photos/seed/coding/250/200", route: "/skills", icon: <FaCode /> },
-    { title: "Projects", imgSrc: "https://picsum.photos/seed/development/250/200", route: "/projects", icon: <FaProjectDiagram /> },
-    { title: "Certifications", imgSrc: "https://picsum.photos/seed/badge/250/200", route: "/certifications", icon: <FaCertificate /> },
-    { title: "Experience", imgSrc: "https://picsum.photos/seed/work/250/200", route: "/work-experience", icon: <FaBriefcase /> },
-    { title: "Recommendations", imgSrc: "https://picsum.photos/seed/networking/250/200", route: "/recommendations", icon: <FaHandsHelping /> },
-    { title: "Contact Me", imgSrc: "https://picsum.photos/seed/connect/250/200", route: "/contact-me", icon: <FaEnvelope /> }
+    {
+      title: "Skills",
+      imgSrc: skillsSoftHard,
+      route: "/skills",
+      icon: <FaCode />,
+      cardClassName: 'pick-card--neon',
+      imgStyle: { objectPosition: 'center 54%' },
+    },
+    {
+      title: "Projects",
+      imgSrc: projectsImage,
+      route: "/projects",
+      icon: <FaProjectDiagram />,
+      cardClassName: 'pick-card--projects',
+      imgStyle: { objectPosition: 'center 55%' },
+    },
+    {
+      title: "Certifications",
+      imgSrc: certificationsImage,
+      route: "/certifications",
+      icon: <FaCertificate />,
+      cardClassName: 'pick-card--certifications',
+      imgStyle: { objectPosition: 'center 52%' },
+    },
+    {
+      title: "Experience",
+      imgSrc: experienceImage,
+      route: "/work-experience",
+      icon: <FaBriefcase />,
+      cardClassName: 'pick-card--experience',
+      imgStyle: { objectPosition: 'center 45%' },
+    },
+    {
+      title: "Recommendations",
+      imgSrc: recommendationsImage,
+      route: "/recommendations",
+      icon: <FaHandsHelping />,
+      cardClassName: 'pick-card--recommendations',
+      imgStyle: { objectPosition: 'center 48%' },
+    },
+    {
+      title: "Contact Me",
+      imgSrc: contactImage,
+      route: "/contact-me",
+      icon: <FaEnvelope />,
+      cardClassName: 'pick-card--contact',
+      imgStyle: { objectPosition: 'center 42%' },
+    }
   ],
   stalker: [
-    { title: "Recommendations", imgSrc: "https://picsum.photos/seed/networking/250/200", route: "/recommendations", icon: <FaHandsHelping /> },
-    { title: "Contact Me", imgSrc: "https://picsum.photos/seed/call/250/200", route: "/contact-me", icon: <FaEnvelope /> },
-    { title: "Projects", imgSrc: "https://picsum.photos/seed/planning/250/200", route: "/projects", icon: <FaProjectDiagram /> },
-    { title: "Experience", imgSrc: "https://picsum.photos/seed/resume/250/200", route: "/work-experience", icon: <FaBriefcase /> },
-    { title: "Certifications", imgSrc: "https://picsum.photos/seed/achievements/250/200", route: "/certifications", icon: <FaCertificate /> },
+    {
+      title: "Recommendations",
+      imgSrc: recommendationsImage,
+      route: "/recommendations",
+      icon: <FaHandsHelping />,
+      cardClassName: 'pick-card--recommendations',
+      imgStyle: { objectPosition: 'center 48%' },
+    },
+    {
+      title: "Contact Me",
+      imgSrc: contactImage,
+      route: "/contact-me",
+      icon: <FaEnvelope />,
+      cardClassName: 'pick-card--contact',
+      imgStyle: { objectPosition: 'center 42%' },
+    },
+    {
+      title: "Projects",
+      imgSrc: projectsImage,
+      route: "/projects",
+      icon: <FaProjectDiagram />,
+      cardClassName: 'pick-card--projects',
+      imgStyle: { objectPosition: 'center 55%' },
+    },
+    {
+      title: "Experience",
+      imgSrc: experienceImage,
+      route: "/work-experience",
+      icon: <FaBriefcase />,
+      cardClassName: 'pick-card--experience',
+      imgStyle: { objectPosition: 'center 45%' },
+    },
+    {
+      title: "Certifications",
+      imgSrc: certificationsImage,
+      route: "/certifications",
+      icon: <FaCertificate />,
+      cardClassName: 'pick-card--certifications',
+      imgStyle: { objectPosition: 'center 52%' },
+    },
   ],
-  adventurer: [
-    { title: "Music", imgSrc: "https://picsum.photos/seed/music/250/200", route: "/music", icon: <FaMusic /> },
-    { title: "Projects", imgSrc: "https://picsum.photos/seed/innovation/250/200", route: "/projects", icon: <FaProjectDiagram /> },
-    { title: "Reading", imgSrc: "https://picsum.photos/seed/books/250/200", route: "/reading", icon: <FaBook /> },
-    { title: "Contact Me", imgSrc: "https://picsum.photos/seed/connect/250/200", route: "/contact-me", icon: <FaEnvelope /> },
-    { title: "Certifications", imgSrc: "https://picsum.photos/seed/medal/250/200", route: "/certifications", icon: <FaCertificate /> }
-  ]
 };
 
 
@@ -65,11 +190,16 @@ const TopPicksRow: React.FC<TopPicksRowProps> = ({ profile }) => {
       {topPicks.map((pick, index) => (
           <div 
             key={index} 
-            className="pick-card" 
+            className={`pick-card ${pick.cardClassName ?? ''}`}
             onClick={() => navigate(pick.route)}
             style={{ animationDelay: `${index * 0.2}s` }} // Adding delay based on index
           >
-            <img src={pick.imgSrc} alt={pick.title} className="pick-image" />
+            <img
+              src={pick.imgSrc}
+              alt={pick.title}
+              className="pick-image"
+              style={pick.imgStyle}
+            />
             <div className="overlay">
               <div className="pick-label">{pick.title}</div>
             </div>

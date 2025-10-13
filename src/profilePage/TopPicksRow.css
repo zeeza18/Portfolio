@@ -73,6 +73,69 @@
   opacity: 1;
 }
 
+.pick-card--warm .pick-image {
+  filter: brightness(1.12) contrast(1.08) saturate(1.08);
+}
+
+.pick-card--warm::after {
+  background: radial-gradient(65% 50% at 50% 15%, rgba(255, 205, 150, 0.55), transparent 75%);
+  opacity: 0.35;
+}
+
+.pick-card--neon .pick-image {
+  filter: brightness(1.1) contrast(1.05) saturate(1.18);
+}
+
+.pick-card--neon::after {
+  background: radial-gradient(60% 55% at 50% 0%, rgba(72, 168, 255, 0.5), transparent 75%);
+  opacity: 0.45;
+}
+
+.pick-card--experience .pick-image {
+  filter: brightness(1.06) contrast(1.08);
+}
+
+.pick-card--experience::after {
+  background: radial-gradient(60% 55% at 50% 0%, rgba(229, 9, 20, 0.42), transparent 80%);
+  opacity: 0.5;
+}
+
+.pick-card--certifications .pick-image {
+  filter: brightness(1.08) contrast(1.04);
+}
+
+.pick-card--certifications::after {
+  background: radial-gradient(62% 58% at 50% 0%, rgba(255, 214, 102, 0.45), transparent 78%);
+  opacity: 0.48;
+}
+
+.pick-card--recommendations .pick-image {
+  filter: brightness(1.05) contrast(1.07) saturate(1.1);
+}
+
+.pick-card--recommendations::after {
+  background: radial-gradient(62% 58% at 50% 0%, rgba(46, 204, 113, 0.45), transparent 78%);
+  opacity: 0.5;
+}
+
+.pick-card--projects .pick-image {
+  filter: brightness(1.07) contrast(1.1);
+}
+
+.pick-card--projects::after {
+  background: radial-gradient(62% 58% at 50% 0%, rgba(155, 89, 182, 0.45), transparent 78%);
+  opacity: 0.52;
+}
+
+.pick-card--contact .pick-image {
+  filter: brightness(1.04) contrast(1.05);
+}
+
+.pick-card--contact::after {
+  background: radial-gradient(62% 58% at 50% 0%, rgba(255, 118, 117, 0.42), transparent 78%);
+  opacity: 0.5;
+}
+
 .pick-image {
   width: 100%;
   height: 100%;

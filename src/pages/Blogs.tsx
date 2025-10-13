@@ -30,7 +30,7 @@ const Blogs: React.FC = () => {
   return (
     <div className="blogs-container">
       <h2 className="blogs-title">Thoughts &amp; Writing</h2>
-      <p className="blogs-intro">Experiments, delivery patterns, and field notes from applied AI/ML work.</p>
+      <p className="blogs-intro">Experiments, delivery patterns, and field notes from applied AI engineering and research.</p>
       <div className="blogs-grid">
         {blogs.map((blog, index) => (
           <a

@@ -6,9 +6,9 @@ import ProfileBanner from './ProfileBanner';
 import TopPicksRow from './TopPicksRow';
 import ContinueWatching from './ContinueWatching';
 
-type ProfileType = 'recruiter' | 'developer' | 'stalker' | 'adventurer';
+type ProfileType = 'recruiter' | 'developer' | 'stalker';
 
-const validProfiles: ProfileType[] = ['recruiter', 'developer', 'stalker', 'adventurer'];
+const validProfiles: ProfileType[] = ['recruiter', 'developer', 'stalker'];
 
 const ProfilePage: React.FC = () => {
   const location = useLocation();

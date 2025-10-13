@@ -4,7 +4,6 @@ import ProfileCard from '../components/ProfileCard';
 import blueImage from '../images/blue.png';
 import greyImage from '../images/grey.png';
 import redImage from '../images/red.png';
-import yellowImage from '../images/yellow.png';
 import './browse.css';
 
 const Browse: React.FC = () => {
@@ -25,11 +24,6 @@ const Browse: React.FC = () => {
       name: "stalker",
       image: redImage,
       backgroundGif: "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExc28yMjMyZmJ6eWtxbmNwdDV6cXk4dWZmcjFhZms2cXBjN2h5ZDJjeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/QjZXUBUr89CkiWLPjL/giphy.gif" // Dark, abstract digital lights
-    },
-    {
-      name: "adventurer",
-      image: yellowImage,
-      backgroundGif: "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExbmxib24ycWo2cjlmazh0NGV5NTZ2Mzd2YWY0M2tvam9oYXBwYW1ocCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/ERKMnDK6tkzJe8YVa3/giphy-downsized-large.gif" // Dark ocean waves at night
     },
   ];
 

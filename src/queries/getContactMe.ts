@@ -1,5 +1,6 @@
 import { hasDatoCmsCredentials, requestDatoCMS } from './datoCMSClient';
 import { ContactMe } from '../types';
+import profileAvatar from '../images/me.png';
 
 const GET_CONTACT_ME = `
   query {
@@ -20,15 +21,16 @@ const GET_CONTACT_ME = `
 
 const FALLBACK_CONTACT: ContactMe = {
   profilePicture: {
-    url: 'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=640&q=80',
+    url: profileAvatar,
   },
   name: 'Mohammed Azeezulla',
-  title: 'AI/ML Engineer',
+  title: 'AI Engineer & Researcher',
   summary:
-    'Designing agentic automation, multimodal analytics, and production-ready ML platforms that unlock measurable business impact.',
-  companyUniversity: 'TekAnthem · Chicago, IL',
+    'AI engineer and researcher focused on intelligent systems, agentic automation, and translating cutting-edge experimentation into production-ready AI capabilities.',
+  companyUniversity: 'TekAnthem - Chicago, IL',
   linkedinLink: 'https://www.linkedin.com/in/moazeez/',
-  email: 'mmoha134@depaul.edu',
+  email: 'azeezullamohammedam@gmail.com',
+  secondaryEmail: 'mmoha134@depaul.edu',
   phoneNumber: '+1 (872) 330-2122',
 };
 

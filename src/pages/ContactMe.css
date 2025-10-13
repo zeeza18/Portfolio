@@ -8,24 +8,26 @@
 }
 
 .linkedin-badge-custom {
-  display: flex;
-  align-items: center;
-  gap: 1.4rem;
+  display: grid;
+  grid-template-columns: minmax(180px, 0.55fr) 1fr;
+  align-items: stretch;
+  gap: 1.8rem;
   background: rgba(18, 19, 32, 0.8);
   border-radius: var(--radius-lg);
-  padding: 1.6rem 2rem;
+  padding: 1.8rem 2.4rem;
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: var(--shadow-soft);
   backdrop-filter: blur(12px);
-  max-width: 480px;
+  max-width: 700px;
   width: 100%;
 }
 
 .badge-avatar {
-  width: 76px;
-  height: 76px;
-  border-radius: 22px;
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 28px;
   object-fit: cover;
+  object-position: center 20%;
   border: 2px solid rgba(255, 255, 255, 0.18);
   box-shadow: 0 14px 32px rgba(0, 0, 0, 0.45);
 }
@@ -151,12 +153,20 @@
 
 @media (max-width: 768px) {
   .linkedin-badge-custom {
+    display: flex;
     flex-direction: column;
+    align-items: center;
     text-align: center;
+    gap: 1.2rem;
   }
 
   .badge-content {
     align-items: center;
+  }
+
+  .badge-avatar {
+    width: 140px;
+    max-width: 70%;
   }
 
   .contact-item {

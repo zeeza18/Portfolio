@@ -3,6 +3,7 @@ import './ContactMe.css';
 import { FaEnvelope, FaPhoneAlt, FaCoffee, FaLinkedin } from 'react-icons/fa';
 import { ContactMe as IContactMe } from '../types';
 import { getContactMe } from '../queries/getContactMe';
+import defaultAvatar from '../images/me.png';
 
 const ContactMe: React.FC = () => {
   const [userData, setUserData] = useState<IContactMe>();
@@ -18,9 +19,12 @@ const ContactMe: React.FC = () => {
 
   if (!userData) return <div>Loading...</div>;
 
-  const fallbackAvatar =
-    'https://images.unsplash.com/photo-1521572267360-ee0c2909d518?auto=format&fit=crop&w=640&q=80';
+  const fallbackAvatar = defaultAvatar;
   const avatarSrc = userData.profilePicture?.url || fallbackAvatar;
+
+  const emails = [userData.email, userData.secondaryEmail].filter(
+    (value): value is string => Boolean(value)
+  );
 
   return (
     <div className="contact-container">
@@ -38,16 +42,18 @@ const ContactMe: React.FC = () => {
       </div>
 
       <div className="contact-header">
-        <p>Ready to collaborate on the next intelligent system? Drop a note or schedule time.</p>
+        <p>Ready to collaborate on the next intelligent system? Reach out by email or phone and we&apos;ll lock in time.</p>
       </div>
 
       <div className="contact-details">
-        <div className="contact-item">
-          <FaEnvelope className="contact-icon" />
-          <a href={`mailto:${userData.email}`} className="contact-link">
-            {userData.email}
-          </a>
-        </div>
+        {emails.map((email) => (
+          <div className="contact-item" key={email}>
+            <FaEnvelope className="contact-icon" />
+            <a href={`mailto:${email}`} className="contact-link">
+              {email}
+            </a>
+          </div>
+        ))}
         <div className="contact-item">
           <FaPhoneAlt className="contact-icon" />
           <a href={`tel:${userData.phoneNumber}`} className="contact-link">
