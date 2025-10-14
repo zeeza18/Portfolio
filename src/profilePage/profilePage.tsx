@@ -1,5 +1,5 @@
 import React from 'react';
-import { useLocation, useParams } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import './ProfilePage.css';
 
 import ProfileBanner from './ProfileBanner';
@@ -11,10 +11,6 @@ type ProfileType = 'recruiter' | 'developer' | 'stalker';
 const validProfiles: ProfileType[] = ['recruiter', 'developer', 'stalker'];
 
 const ProfilePage: React.FC = () => {
-  const location = useLocation();
-  const backgroundGif =
-    location.state?.backgroundGif ||
-    'https://media.giphy.com/media/xT9IgzoKnwFNmISR8I/giphy.gif';
   const { profileName } = useParams<{ profileName: string }>();
 
   const profile = (validProfiles as string[]).includes(profileName ?? '')
@@ -23,7 +19,7 @@ const ProfilePage: React.FC = () => {
 
   return (
     <>
-      <div className="profile-page" style={{ backgroundImage: `url(${backgroundGif})` }}>
+      <div className="profile-page">
         <ProfileBanner />
       </div>
       <TopPicksRow profile={profile} />

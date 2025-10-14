@@ -16,6 +16,7 @@
   --radius-md: 18px;
   --radius-lg: 26px;
   --radius-pill: 999px;
+  --navbar-height: clamp(64px, 10vw, 82px);
 }
 
 *,
@@ -71,6 +72,6 @@ a {
 }
 
 .content {
-  padding-top: 5rem;
+  padding-top: var(--navbar-height);
   min-height: 100vh;
 }

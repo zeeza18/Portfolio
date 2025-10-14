@@ -12,23 +12,20 @@ const Browse: React.FC = () => {
   const profiles = [
     {
       name: "recruiter",
-      image: blueImage,
-      backgroundGif: "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExOTZ5eWwwbjRpdWM1amxyd3VueHhteTVzajVjeGZtZGJ1dDc4MXMyNCZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9dg/16u7Ifl2T4zYfQ932F/giphy.gif" // Dark storm clouds
+      image: blueImage
     },
     {
       name: "developer",
-      image: greyImage,
-      backgroundGif: "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExNGNidDl5emZpejY2eGFxa2I4NW0zZGNpbWRlbnBrZ3N2dWhhbzM1MyZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/TFPdmm3rdzeZ0kP3zG/giphy.gif" // Flickering neon lights
+      image: greyImage
     },
     {
       name: "stalker",
-      image: redImage,
-      backgroundGif: "https://i.giphy.com/media/v1.Y2lkPTc5MGI3NjExc28yMjMyZmJ6eWtxbmNwdDV6cXk4dWZmcjFhZms2cXBjN2h5ZDJjeSZlcD12MV9pbnRlcm5hbF9naWZfYnlfaWQmY3Q9Zw/QjZXUBUr89CkiWLPjL/giphy.gif" // Dark, abstract digital lights
+      image: redImage
     },
   ];
 
-  const handleProfileClick = (profile: { name: string; image: string; backgroundGif: string }) => {
-    navigate(`/profile/${profile.name}`, { state: { profileImage: profile.image, backgroundGif: profile.backgroundGif } });
+  const handleProfileClick = (profile: { name: string; image: string }) => {
+    navigate(`/profile/${profile.name}`, { state: { profileImage: profile.image } });
   };
 
   return (

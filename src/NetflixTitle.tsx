@@ -9,66 +9,66 @@ const NetflixTitle = () => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const navigate = useNavigate();
 
-  useEffect(() => {
-    const audio = new Audio(netflixSound);
-    audio.preload = 'auto';
-    audio.muted = true;
-    audioRef.current = audio;
+  const ensureAudio = useCallback(() => {
+    let audio = audioRef.current;
+    if (!audio) {
+      audio = new Audio(netflixSound);
+      audio.preload = 'auto';
+      audio.muted = false;
+      audio.volume = 1;
+      (audio as any).playsInline = true;
+      audioRef.current = audio;
+    }
+    return audio;
   }, []);
 
-  const triggerIntro = useCallback((fromUserGesture = false) => {
-    if (hasStarted) return;
+  const playIntroSound = useCallback(async () => {
+    const audio = ensureAudio();
+    if (!audio) return false;
 
-    const attemptPlay = async () => {
-      try {
-        const audio = audioRef.current;
-        if (!audio) return;
-        audio.currentTime = 0;
-        audio.volume = 1;
-        audio.muted = !fromUserGesture;
-
-        await audio.play();
-
-        if (!fromUserGesture) {
-          setTimeout(() => {
-            if (audioRef.current) {
-              audioRef.current.muted = false;
-            }
-          }, 150);
-        }
-      } catch (error) {
-        console.error('Audio play error:', error);
+    try {
+      audio.currentTime = 0;
+      audio.volume = 1;
+      audio.muted = false;
+      await audio.play();
+      return true;
+    } catch (error) {
+      if (error instanceof DOMException && error.name === 'NotAllowedError') {
+        return false;
       }
+      console.error('Audio play error:', error);
+      return false;
+    }
+  }, [ensureAudio]);
+
+  useEffect(() => {
+    const attemptAutoplay = async () => {
+      const success = await playIntroSound();
+      if (!success) {
+        console.warn(
+          'Browser blocked autoplay for the intro sound. A user interaction will be required before audio can play.'
+        );
+      }
+      setHasStarted(true);
     };
 
-    attemptPlay();
-    setHasStarted(true);
-  }, [hasStarted]);
+    attemptAutoplay();
+  }, [playIntroSound]);
 
   useEffect(() => {
-    if (hasStarted) {
-      const timer = setTimeout(() => {
-        navigate('/browse');
-      }, 4000);
-      return () => clearTimeout(timer);
-    }
+    if (!hasStarted) return;
+
+    const timer = setTimeout(() => {
+      navigate('/browse');
+    }, 4000);
+
+    return () => clearTimeout(timer);
   }, [hasStarted, navigate]);
 
-  useEffect(() => {
-    const autoTimer = setTimeout(() => {
-      triggerIntro(false);
-    }, 4000);
-    return () => clearTimeout(autoTimer);
-  }, [triggerIntro]);
-
-  useEffect(() => {
-    const handler = () => triggerIntro(true);
-    window.addEventListener('pointerdown', handler, { once: true });
-    return () => window.removeEventListener('pointerdown', handler);
-  }, [triggerIntro]);
-
   return (
-    <div className="netflix-container" onClick={() => triggerIntro(true)}>
+    <div
+      className="netflix-container"
+    >
       <div
         className={`netflix-logo ${hasStarted ? 'animate' : ''}`}
         aria-label="Mohammed Azeezulla"

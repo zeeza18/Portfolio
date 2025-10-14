@@ -4,6 +4,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  min-height: var(--navbar-height);
   padding: 1.2rem clamp(1.5rem, 4vw, 3rem);
   color: var(--color-text);
   z-index: 10;
@@ -107,6 +108,13 @@
 @media (max-width: 960px) {
   .navbar {
     padding: 1rem clamp(1.25rem, 6vw, 2rem);
+    background: rgba(9, 10, 18, 0.96);
+    box-shadow: 0 8px 30px rgba(4, 5, 12, 0.55);
+    backdrop-filter: none;
+  }
+
+  .navbar.scrolled {
+    background: rgba(9, 10, 18, 0.96);
   }
 
   .navbar-links {
