@@ -33,7 +33,7 @@ const Navbar: React.FC = () => {
     <>
       <nav className={`navbar ${isScrolled ? "scrolled" : ""}`}>
         <div className="navbar-left">
-          <Link to="/" className="navbar-logo">
+          <Link to="/" state={{ autoStartIntro: true }} className="navbar-logo">
             <img
               src={wordmarkImage}
               alt="Mohammed Azeezulla"

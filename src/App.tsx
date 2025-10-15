@@ -1,5 +1,5 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+﻿import React from 'react';
+import { Routes, Route, useLocation } from 'react-router-dom';
 import NetflixTitle from './NetflixTitle';
 import ProfilePage from './profilePage/profilePage';
 import Browse from './browse/browse';
@@ -16,10 +16,12 @@ import Blogs from './pages/Blogs';
 import Certifications from './pages/Certifications';
 import Transformer from './pages/Transformer';
 
-const App: React.FC = () => {
+const AppRoutes: React.FC = () => {
+  const location = useLocation();
+
   return (
     <Routes>
-      <Route path="/" element={<NetflixTitle />} />
+      <Route path="/" element={<NetflixTitle autoStart={Boolean(location.state?.autoStartIntro)} />} />
       <Route path="/browse" element={<Browse />} />
       <Route path="/profile/:profileName" element={<Layout><ProfilePage /></Layout>} />
       <Route path="/work-permit" element={<Layout><WorkPermit /></Layout>} />
@@ -35,6 +37,10 @@ const App: React.FC = () => {
       <Route path="/certifications" element={<Layout><Certifications /></Layout>} />
     </Routes>
   );
+};
+
+const App: React.FC = () => {
+  return <AppRoutes />;
 };
 
 export default App;

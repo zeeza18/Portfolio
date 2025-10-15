@@ -14,7 +14,7 @@ const WorkPermit: React.FC = () => {
     if (typeof window !== 'undefined' && window.history.length > 1) {
       navigate(-1);
     } else {
-      navigate('/');
+      navigate('/', { state: { autoStartIntro: true } });
     }
   }, [navigate]);
 
