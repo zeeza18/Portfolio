@@ -30,7 +30,7 @@ const Certifications: React.FC = () => {
   }, [certifications]);
 
   if (cards.length === 0) {
-    return <div className="certifications-loading">Loading certificates…</div>;
+    return <div className="certifications-loading">Loading certificates...</div>;
   }
 
   return (

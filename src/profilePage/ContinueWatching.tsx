@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import './ContinueWatching.css';
 import musicImage from '../images/ac-dc.jpg';
 import readingImage from '../images/alchemist.jpg';
-import blogsImage from '../images/myalphadojo.png';
+import blogsImage from '../images/blog.png';
 import contactImage from '../images/contact-me.png';
 import certificationsImage from '../images/certifications.jpeg';
 

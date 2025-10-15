@@ -1,28 +1,29 @@
 import React from "react";
 import "./Blogs.css";
-import { FaMedium, FaLinkedin } from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { FaBolt } from "react-icons/fa";
+import { normalizeCopy } from "../utils/typography";
 
-const blogs = [
+type BlogPost = {
+  slug: string;
+  title: string;
+  description: string;
+  platform: string;
+  badge?: string;
+  icon: React.ComponentType;
+  delay?: string;
+};
+
+const blogPosts: BlogPost[] = [
   {
-    title: "Building Agentic QA Pipelines",
-    platform: "Medium",
-    icon: <FaMedium />,
-    link: "https://medium.com/@moazeez/building-agentic-qa-pipelines",
-    description: "How I orchestrate LangChain, CrewAI, and Playwright to ship autonomous regression suites.",
-  },
-  {
-    title: "Multimodal Reporting on AWS",
-    platform: "Medium",
-    icon: <FaMedium />,
-    link: "https://medium.com/@moazeez/multimodal-reporting-on-aws",
-    description: "Scaling dashboards with containerized inference and observability for enterprise stakeholders.",
-  },
-  {
-    title: "From Prompt to Production",
-    platform: "LinkedIn",
-    icon: <FaLinkedin />,
-    link: "https://www.linkedin.com/in/moazeez/",
-    description: "Lessons learned deploying generative copilots across analytics, testing, and operations teams.",
+    slug: "transformer",
+    title: "Transformer Architecture Deep Dive",
+    description:
+      'A cinematic walkthrough of "Attention Is All You Need" with animations, intuition, and spam detection demo.',
+    platform: "Portfolio Special",
+    badge: "New",
+    icon: FaBolt,
+    delay: "0s",
   },
 ];
 
@@ -30,25 +31,31 @@ const Blogs: React.FC = () => {
   return (
     <div className="blogs-container">
       <h2 className="blogs-title">Thoughts &amp; Writing</h2>
-      <p className="blogs-intro">Experiments, delivery patterns, and field notes from applied AI engineering and research.</p>
+      <p className="blogs-intro">
+        Experiments, delivery patterns, and field notes from applied AI engineering and research.
+      </p>
       <div className="blogs-grid">
-        {blogs.map((blog, index) => (
-          <a
-            href={blog.link}
-            key={index}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="blog-card"
-            style={{ '--delay': `${index * 0.2}s` } as React.CSSProperties}
-          >
-            <div className="blog-icon animated-icon">{blog.icon}</div>
-            <div className="blog-info animated-text">
-              <h3 className="blog-title">{blog.title}</h3>
-              <p className="blog-description">{blog.description}</p>
-              <span className="blog-platform">{blog.platform}</span>
-            </div>
-          </a>
-        ))}
+        {blogPosts.map((post) => {
+          const Icon = post.icon;
+          return (
+            <Link
+              key={post.slug}
+              to={`/blogs/${post.slug}`}
+              className="blog-card"
+              style={{ "--delay": post.delay ?? "0s" } as React.CSSProperties}
+            >
+              {post.badge && <span className="blog-badge">{normalizeCopy(post.badge)}</span>}
+              <div className="blog-icon animated-icon">
+                <Icon />
+              </div>
+              <div className="blog-info animated-text">
+                <h3 className="blog-title">{normalizeCopy(post.title)}</h3>
+                <p className="blog-description">{normalizeCopy(post.description)}</p>
+                <span className="blog-platform">{normalizeCopy(post.platform)}</span>
+              </div>
+            </Link>
+          );
+        })}
       </div>
     </div>
   );
