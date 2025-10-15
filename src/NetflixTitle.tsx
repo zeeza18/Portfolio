@@ -8,22 +8,40 @@ const NetflixTitle = () => {
   const [hasStarted, setHasStarted] = useState(false);
   const [audioHasPlayed, setAudioHasPlayed] = useState(false);
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const audioUnlockedRef = useRef(false);
   const navigate = useNavigate();
 
-  const ensureAudio = useCallback(() => {
-    let audio = audioRef.current;
-    if (!audio) {
-      audio = document.createElement('audio');
-      audio.src = netflixSound;
-      audio.preload = 'auto';
-      audio.autoplay = true;
-      audio.muted = true;
-      audio.volume = 0;
-      (audio as any).playsInline = true;
-      audioRef.current = audio;
-      document.body.appendChild(audio);
-    }
-    return audio;
+  // Create audio element immediately when component mounts
+  useEffect(() => {
+    const audio = new Audio(netflixSound);
+    audio.preload = 'auto';
+    audio.volume = 0;
+    audio.muted = true;
+    audio.loop = false;
+    (audio as any).playsInline = true;
+    audioRef.current = audio;
+
+    // Try to unlock audio immediately with a silent play
+    const unlockAudio = async () => {
+      try {
+        await audio.play();
+        audioUnlockedRef.current = true;
+        // Keep it playing muted initially
+      } catch (e) {
+        // Will be unlocked on first user interaction
+        console.log('Audio context not unlocked yet, will retry on interaction');
+      }
+    };
+
+    unlockAudio();
+
+    return () => {
+      if (audioRef.current) {
+        audioRef.current.pause();
+        audioRef.current.src = '';
+        audioRef.current = null;
+      }
+    };
   }, []);
 
   const fadeInAudio = useCallback(() => {
@@ -49,87 +67,62 @@ const NetflixTitle = () => {
     ramp();
   }, []);
 
-  const playIntroSound = useCallback(
-    async (bootstrapMuted = false) => {
-      const audio = ensureAudio();
-      if (!audio) return false;
-
-      try {
-        audio.currentTime = 0;
-        audio.muted = bootstrapMuted;
-        audio.volume = bootstrapMuted ? 0 : 1;
-        const playPromise = audio.play();
-        if (playPromise) {
-          await playPromise;
-        }
-
-        if (bootstrapMuted) {
-          setTimeout(fadeInAudio, 80);
-        }
-        return true;
-      } catch (error) {
-        if (error instanceof DOMException && error.name === 'NotAllowedError') {
-          return false;
-        }
-        console.error('Audio play error:', error);
-        return false;
-      }
-    },
-    [ensureAudio, fadeInAudio]
-  );
-
+  // Main animation trigger - this should start when logo animation begins
   useEffect(() => {
-    const removeUserActivationHandlers = () => {
-      document.removeEventListener('pointerdown', handleUserActivation);
-      document.removeEventListener('keydown', handleUserActivation);
-    };
+    // Small delay to ensure audio element is ready
+    const initTimer = setTimeout(() => {
+      setHasStarted(true);
 
-    const handleUserActivation = async () => {
-      const success = await playIntroSound(false);
-      if (success) {
-        removeUserActivationHandlers();
-        setAudioHasPlayed(true);
+      // Start the animation and sound together
+      const audio = audioRef.current;
+      if (audio) {
+        // Reset and unmute
+        audio.currentTime = 0;
+        audio.muted = false;
+        audio.volume = 0;
+
+        // Play and fade in
+        audio.play()
+          .then(() => {
+            setAudioHasPlayed(true);
+            fadeInAudio();
+          })
+          .catch((error) => {
+            console.log('Autoplay blocked, waiting for user interaction');
+            // Set up one-time interaction handlers
+            const handleInteraction = () => {
+              audio.currentTime = 0;
+              audio.muted = false;
+              audio.volume = 0;
+              audio.play()
+                .then(() => {
+                  setAudioHasPlayed(true);
+                  fadeInAudio();
+                })
+                .catch(console.error);
+            };
+
+            document.addEventListener('click', handleInteraction, { once: true });
+            document.addEventListener('keydown', handleInteraction, { once: true });
+            document.addEventListener('touchstart', handleInteraction, { once: true });
+          });
       }
-    };
-
-    const attemptAutoplay = async () => {
-      let success = await playIntroSound(false);
-
-      if (!success) {
-        success = await playIntroSound(true);
-      }
-
-      if (success) {
-        setAudioHasPlayed(true);
-      } else {
-        document.addEventListener('pointerdown', handleUserActivation, { once: true });
-        document.addEventListener('keydown', handleUserActivation, { once: true });
-        console.warn('Browser blocked autoplay for the intro sound. The audio will resume on your first interaction.');
-      }
-    };
-
-    setHasStarted(true);
-    attemptAutoplay();
+    }, 100);
 
     return () => {
-      removeUserActivationHandlers();
-      if (audioRef.current) {
-        audioRef.current.pause();
-        audioRef.current.currentTime = 0;
-        audioRef.current.remove();
-        audioRef.current = null;
-      }
+      clearTimeout(initTimer);
     };
-  }, [playIntroSound]);
+  }, [fadeInAudio]);
 
   useEffect(() => {
-    if (!hasStarted || !audioHasPlayed) return;
+    if (!hasStarted) return;
 
-    const timer = setTimeout(() => {
+    const delay = audioHasPlayed ? 4000 : 4600;
+    const timer = window.setTimeout(() => {
       navigate('/browse');
-    }, 4000);
+    }, delay);
 
-    return () => clearTimeout(timer);
+    return () => window.clearTimeout(timer);
   }, [audioHasPlayed, hasStarted, navigate]);
 
   return (
