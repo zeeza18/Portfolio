@@ -568,7 +568,7 @@ function renderTable(lines: string[]): string {
     .map((row) => `<tr>${row.map((cell) => `<td>${inlineFormat(cell)}</td>`).join('')}</tr>`)
     .join('');
 
-  return `<table>${headerHtml}${bodyHtml}</table>`;
+  return `<div class="transformer-scrollbox"><table>${headerHtml}${bodyHtml}</table></div>`;
 }
 
 const encoderStackConfig: StackConfig = {
