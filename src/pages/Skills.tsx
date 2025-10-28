@@ -184,12 +184,6 @@ const Skills: React.FC = () => {
 
   return (
     <div className="skills-container">
-      <div className="skills-hero">
-        <img src={skillsSoftHard} alt="Soft and hard skills cubes" />
-        <div className="skills-hero-overlay">
-          <span className="skills-hero-tagline">Technical | Soft | Domain Mastery</span>
-        </div>
-      </div>
       <h2 className="skills-title">Stacks I Build With</h2>
       {categories.map((category, index) => (
         <div key={category} className="skill-category">

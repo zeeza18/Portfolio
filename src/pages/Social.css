@@ -1,0 +1,216 @@
+.social-container {
+  padding: clamp(5rem, 9vw, 7rem) clamp(1.5rem, 6vw, 5rem) clamp(6rem, 10vw, 8rem);
+  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+  gap: clamp(2rem, 5vw, 3.2rem);
+  align-items: center;
+}
+
+.social-hero {
+  width: 100%;
+  max-width: 1080px;
+  padding: clamp(1.8rem, 4vw, 3rem);
+  border-radius: var(--radius-lg);
+  background: radial-gradient(110% 140% at 20% 20%, rgba(229, 9, 20, 0.24), rgba(18, 19, 32, 0.82));
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: var(--shadow-soft);
+}
+
+.social-hero-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-width: 720px;
+}
+
+.social-title {
+  margin: 0;
+  font-size: clamp(1.9rem, 3.6vw, 2.8rem);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.social-subtitle {
+  margin: 0;
+  color: var(--color-muted);
+  line-height: 1.7;
+  font-size: clamp(1rem, 2vw, 1.15rem);
+}
+
+.social-grid {
+  width: 100%;
+  max-width: 1080px;
+  display: grid;
+  gap: clamp(1.5rem, 3vw, 2rem);
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+}
+
+.social-card {
+  display: flex;
+  flex-direction: column;
+  background: rgba(18, 19, 32, 0.78);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+  transition: transform 0.35s ease, box-shadow 0.35s ease, border 0.35s ease;
+}
+
+.social-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(229, 9, 20, 0.35);
+  box-shadow: 0 28px 60px rgba(229, 9, 20, 0.22);
+}
+
+.social-media {
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+  background: rgba(18, 19, 32, 0.6);
+}
+
+.social-media.placeholder {
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.8);
+  background: repeating-linear-gradient(
+      45deg,
+      rgba(229, 9, 20, 0.16),
+      rgba(229, 9, 20, 0.16) 12px,
+      rgba(25, 176, 255, 0.16) 12px,
+      rgba(25, 176, 255, 0.16) 24px
+    ),
+    rgba(18, 19, 32, 0.85);
+}
+
+.social-card-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: clamp(1.4rem, 3vw, 1.8rem);
+}
+
+.social-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.social-caption {
+  margin: 0;
+  font-size: 0.98rem;
+  line-height: 1.65;
+  color: var(--color-text);
+}
+
+.social-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+
+.social-tag {
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: rgba(229, 9, 20, 0.16);
+  border: 1px solid rgba(229, 9, 20, 0.32);
+  color: rgba(255, 255, 255, 0.78);
+}
+
+.social-like-button {
+  margin-top: auto;
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 0.95rem;
+  border-radius: var(--radius-pill);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  background: rgba(18, 19, 32, 0.75);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.88rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.3s ease, border 0.3s ease, color 0.3s ease;
+}
+
+.social-like-button:hover {
+  background: rgba(229, 9, 20, 0.24);
+  border-color: rgba(229, 9, 20, 0.45);
+}
+
+.social-like-button.liked {
+  background: rgba(229, 9, 20, 0.32);
+  border-color: rgba(229, 9, 20, 0.65);
+  color: #fff;
+}
+
+.social-like-icon {
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.social-like-count {
+  min-width: 1.5rem;
+  text-align: center;
+}
+
+.social-footer {
+  max-width: 1080px;
+  width: 100%;
+  padding: clamp(1.2rem, 3vw, 1.8rem);
+  border-radius: var(--radius-lg);
+  border: 1px dashed rgba(255, 255, 255, 0.18);
+  background: rgba(18, 19, 32, 0.55);
+  color: var(--color-muted);
+  font-size: 0.95rem;
+}
+
+.social-footer code {
+  font-family: 'Space Grotesk', Menlo, Consolas, monospace;
+  padding: 0.1rem 0.35rem;
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.08);
+  color: var(--color-text);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  border: 0;
+}
+
+@media (max-width: 720px) {
+  .social-hero {
+    text-align: center;
+  }
+
+  .social-meta {
+    justify-content: center;
+  }
+
+  .social-like-button {
+    width: 100%;
+    justify-content: center;
+  }
+}
+
