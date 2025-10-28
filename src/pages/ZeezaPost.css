@@ -286,6 +286,24 @@
   display: block;
 }
 
+.zeeza-posts-placeholder {
+  width: 100%;
+  height: 100%;
+  display: grid;
+  place-items: center;
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.6);
+  background: repeating-linear-gradient(
+      45deg,
+      rgba(229, 9, 20, 0.15),
+      rgba(229, 9, 20, 0.15) 12px,
+      rgba(59, 130, 246, 0.15) 12px,
+      rgba(59, 130, 246, 0.15) 24px
+    );
+}
+
 .zeeza-posts-body {
   display: grid;
   gap: 0.75rem;

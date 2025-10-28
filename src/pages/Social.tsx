@@ -1,27 +1,92 @@
-import React, { useEffect, useMemo, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import './Social.css';
 import {
   loadZeezaPosts,
+  loadZeezaPostMedia,
+  migrateLegacyMedia,
   subscribeToZeezaPosts,
   updateZeezaPost,
   ZeezaPost as ZeezaPostType,
 } from '../utils/zeezaPosts';
 
+type SocialPost = ZeezaPostType & { mediaUrl: string | null };
+
 const Social: React.FC = () => {
-  const [posts, setPosts] = useState<ZeezaPostType[]>(() => loadZeezaPosts());
+  const [posts, setPosts] = useState<SocialPost[]>([]);
   const [initialized, setInitialized] = useState(false);
   const [activeHeartId, setActiveHeartId] = useState<string | null>(null);
   const heartTimeout = useRef<number | null>(null);
+  const mediaUrlRef = useRef<string[]>([]);
+
+  const revokeObjectUrls = useCallback(() => {
+    mediaUrlRef.current.forEach((url) => {
+      URL.revokeObjectURL(url);
+    });
+    mediaUrlRef.current = [];
+  }, []);
+
+  const hydratePosts = useCallback(async () => {
+    const metadata = loadZeezaPosts();
+    const createdUrls: string[] = [];
+    const enriched = await Promise.all(
+      metadata.map(async (post) => {
+        if (!post.mediaKey) {
+          if (post.mediaUrl) {
+            try {
+              const migrated = await migrateLegacyMedia(post);
+              if (migrated) {
+                const objectUrl = URL.createObjectURL(migrated.blob);
+                createdUrls.push(objectUrl);
+                return {
+                  ...post,
+                  mediaKey: migrated.mediaKey,
+                  mediaType: migrated.mediaType,
+                  mediaUrl: objectUrl,
+                };
+              }
+            } catch (migrationError) {
+              console.warn('Unable to migrate legacy media.', migrationError);
+              return { ...post, mediaUrl: post.mediaUrl };
+            }
+            return { ...post, mediaUrl: post.mediaUrl };
+          }
+          return { ...post, mediaUrl: null };
+        }
+        try {
+          const blob = await loadZeezaPostMedia(post.mediaKey);
+          if (!blob) {
+            return { ...post, mediaUrl: null };
+          }
+          const objectUrl = URL.createObjectURL(blob);
+          createdUrls.push(objectUrl);
+          return { ...post, mediaUrl: objectUrl, mediaType: post.mediaType ?? blob.type };
+        } catch (error) {
+          console.warn('Unable to load post media.', error);
+          return { ...post, mediaUrl: null };
+        }
+      })
+    );
+    revokeObjectUrls();
+    mediaUrlRef.current = createdUrls;
+    setPosts(enriched);
+    setInitialized(true);
+  }, [revokeObjectUrls]);
 
   useEffect(() => {
-    setPosts(loadZeezaPosts());
-    setInitialized(true);
+    hydratePosts().catch((error) => {
+      console.warn('Unable to load social posts.', error);
+    });
     const unsubscribe = subscribeToZeezaPosts(() => {
-      setPosts(loadZeezaPosts());
+      hydratePosts().catch((error) => {
+        console.warn('Unable to load social posts.', error);
+      });
     });
 
-    return unsubscribe;
-  }, []);
+    return () => {
+      unsubscribe();
+      revokeObjectUrls();
+    };
+  }, [hydratePosts, revokeObjectUrls]);
 
   useEffect(
     () => () => {
@@ -60,7 +125,7 @@ const Social: React.FC = () => {
 
   const captionFallback = useMemo(() => `${new Date().toLocaleDateString()} - Nothing posted yet.`, []);
 
-  const renderMedia = (post: ZeezaPostType) => {
+  const renderMedia = (post: SocialPost) => {
     if (!post.mediaUrl) {
       return (
         <div className="social-media-frame placeholder">
@@ -69,7 +134,10 @@ const Social: React.FC = () => {
       );
     }
 
-    const isVideo = post.mediaUrl.startsWith('data:video') || /\.mp4($|\?)/i.test(post.mediaUrl);
+    const derivedType =
+      post.mediaType ??
+      (post.mediaUrl && post.mediaUrl.startsWith('data:video') ? 'video/legacy' : '');
+    const isVideo = derivedType.startsWith('video/');
 
     return (
       <div

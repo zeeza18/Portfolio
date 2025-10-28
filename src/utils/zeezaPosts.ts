@@ -1,10 +1,14 @@
+﻿import { deleteMediaBlob, loadMediaBlob, saveMediaBlob } from './zeezaMedia';
+
 export type ZeezaPost = {
   id: string;
   caption: string;
   date: string;
   createdAt: string;
-  mediaUrl: string;
+  mediaKey?: string | null;
+  mediaType?: string | null;
   likes: number;
+  mediaUrl?: string | null;
   liked?: boolean;
 };
 
@@ -17,6 +21,21 @@ type PostUpdate = Partial<Omit<ZeezaPost, 'id' | 'createdAt'>> & {
 };
 
 const isBrowser = typeof window !== 'undefined';
+
+const dataUrlToBlob = (dataUrl: string): Blob => {
+  const [header, base64Data] = dataUrl.split(',');
+  if (!base64Data) {
+    throw new Error('Invalid data URL');
+  }
+  const mimeMatch = header.match(/data:(.*?);base64/);
+  const mime = mimeMatch?.[1] ?? 'application/octet-stream';
+  const binary = window.atob(base64Data);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i += 1) {
+    bytes[i] = binary.charCodeAt(i);
+  }
+  return new Blob([bytes], { type: mime });
+};
 
 const sortPosts = (posts: ZeezaPost[]) =>
   [...posts].sort(
@@ -56,9 +75,13 @@ export const saveZeezaPosts = (posts: ZeezaPost[]) => {
   dispatchPostsUpdated();
 };
 
-export const addZeezaPost = (post: ZeezaPost) => {
+export const addZeezaPost = async (post: ZeezaPost, media?: Blob) => {
   const posts = loadZeezaPosts();
-  saveZeezaPosts(sortPosts([post, ...posts]));
+  const nextPosts = sortPosts([post, ...posts]);
+  if (media && post.mediaKey) {
+    await saveMediaBlob(post.mediaKey, media);
+  }
+  saveZeezaPosts(nextPosts);
 };
 
 export const updateZeezaPost = (id: string, updates: PostUpdate) => {
@@ -69,9 +92,35 @@ export const updateZeezaPost = (id: string, updates: PostUpdate) => {
   saveZeezaPosts(next);
 };
 
-export const deleteZeezaPost = (id: string) => {
+export const deleteZeezaPost = async (id: string) => {
   const posts = loadZeezaPosts();
-  saveZeezaPosts(posts.filter((post) => post.id !== id));
+  const target = posts.find((post) => post.id === id);
+  const next = posts.filter((post) => post.id !== id);
+  if (target?.mediaKey) {
+    await deleteMediaBlob(target.mediaKey);
+  }
+  saveZeezaPosts(next);
+};
+
+export const loadZeezaPostMedia = (mediaKey: string) => loadMediaBlob(mediaKey);
+
+export const migrateLegacyMedia = async (post: ZeezaPost) => {
+  if (!isBrowser) return null;
+  if (post.mediaKey || !post.mediaUrl) return null;
+  try {
+    const blob = dataUrlToBlob(post.mediaUrl);
+    const mediaKey = `media-${post.id}`;
+    await saveMediaBlob(mediaKey, blob);
+    updateZeezaPost(post.id, {
+      mediaKey,
+      mediaType: blob.type,
+      mediaUrl: null,
+    });
+    return { blob, mediaKey, mediaType: blob.type };
+  } catch (error) {
+    console.warn('Unable to migrate legacy media.', error);
+    return null;
+  }
 };
 
 export const subscribeToZeezaPosts = (callback: () => void) => {
@@ -86,4 +135,3 @@ export const subscribeToZeezaPosts = (callback: () => void) => {
     window.removeEventListener('storage', handler);
   };
 };
-

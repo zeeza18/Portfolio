@@ -1,8 +1,10 @@
-﻿import React, { useCallback, useEffect, useState } from 'react';
+﻿import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './ZeezaPost.css';
 import {
   addZeezaPost,
   deleteZeezaPost,
+  loadZeezaPostMedia,
+  migrateLegacyMedia,
   loadZeezaPosts,
   subscribeToZeezaPosts,
   ZeezaPost as ZeezaPostType,
@@ -11,6 +13,8 @@ import {
 const ACCESS_PASSWORD = 'ZEEZASUCKS';
 const DIGEST_STORAGE_KEY = 'zeezaPostDigest';
 const SESSION_STORAGE_KEY = 'zeezaPostSession';
+const MAX_MEDIA_SIZE_BYTES = 50 * 1024 * 1024; // 50 MB limit
+const MAX_MEDIA_SIZE_MB = 50;
 
 const formatDisplayDate = (date: Date) =>
   date.toLocaleDateString(undefined, {
@@ -20,14 +24,6 @@ const formatDisplayDate = (date: Date) =>
   });
 
 const formatInputDate = (date: Date) => date.toISOString().split('T')[0];
-
-const readFileAsDataUrl = (file: File): Promise<string> =>
-  new Promise((resolve, reject) => {
-    const reader = new FileReader();
-    reader.onload = () => resolve(typeof reader.result === 'string' ? reader.result : '');
-    reader.onerror = () => reject(reader.error ?? new Error('Unable to read file'));
-    reader.readAsDataURL(file);
-  });
 
 const computeDigest = async (password: string, key: string) => {
   if (!password || !key) {
@@ -49,6 +45,8 @@ const readDigest = () => {
   return window.localStorage.getItem(DIGEST_STORAGE_KEY);
 };
 
+type ZeezaPostEntry = ZeezaPostType & { mediaUrl: string | null };
+
 const ZeezaPost: React.FC = () => {
   const [storedDigest, setStoredDigest] = useState<string | null>(() => readDigest());
   const [secretKey, setSecretKey] = useState('');
@@ -56,6 +54,7 @@ const ZeezaPost: React.FC = () => {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState('');
   const [notice, setNotice] = useState('');
+  const mediaUrlRef = useRef<string[]>([]);
   const [isUnlocked, setUnlocked] = useState(() => {
     if (typeof window === 'undefined') return false;
     const sessionDigest = window.sessionStorage.getItem(SESSION_STORAGE_KEY);
@@ -158,7 +157,7 @@ const ZeezaPost: React.FC = () => {
   const [mediaFile, setMediaFile] = useState<File | null>(null);
   const [dragActive, setDragActive] = useState(false);
   const [previewUrl, setPreviewUrl] = useState<string | null>(null);
-  const [posts, setPosts] = useState<ZeezaPostType[]>(() => loadZeezaPosts());
+  const [posts, setPosts] = useState<ZeezaPostEntry[]>([]);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
   const clearForm = () => {
@@ -195,31 +194,40 @@ const ZeezaPost: React.FC = () => {
         return;
       }
 
+      if (mediaFile.size > MAX_MEDIA_SIZE_BYTES) {
+        setError(`Media is too large. Please keep uploads under ${MAX_MEDIA_SIZE_MB} MB.`);
+        return;
+      }
+
       try {
-        setBusy(true);
-        const dataUrl = await readFileAsDataUrl(mediaFile);
-        const now = new Date();
+        setBusy(true);        const now = new Date();
         const scheduledDate = postDate ? new Date(postDate) : new Date();
         const validDate = Number.isNaN(scheduledDate.getTime()) ? new Date() : scheduledDate;
         const displayDate = formatDisplayDate(validDate);
         const captionText = caption.trim() || 'Untitled moment';
+        const mediaKey = mediaFile ? `media-${now.getTime()}-${Math.random().toString(36).slice(2, 8)}` : null;
 
         const post: ZeezaPostType = {
           id: `zeeza-${now.getTime()}`,
           caption: captionText,
           date: displayDate,
           createdAt: now.toISOString(),
-          mediaUrl: dataUrl,
+          mediaKey,
+          mediaType: mediaFile.type,
           likes: 0,
           liked: false,
         };
 
-        addZeezaPost(post);
+        await addZeezaPost(post, mediaFile);
         clearForm();
         setNotice('Post published to Social.');
       } catch (publishError) {
-        console.error('Unable to publish Zeeza post.', publishError);
-        setError('Something went wrong while saving. Try again.');
+        if (publishError instanceof DOMException && publishError.name === 'QuotaExceededError') {
+          setError('Storage is full. Delete older posts or upload a smaller file.');
+        } else {
+          console.error('Unable to publish Zeeza post.', publishError);
+          setError('Something went wrong while saving. Try again.');
+        }
       } finally {
         setBusy(false);
       }
@@ -249,17 +257,80 @@ const ZeezaPost: React.FC = () => {
     }
   }, [isUnlocked]);
 
-  useEffect(() => {
-    setPosts(loadZeezaPosts());
-    const unsubscribe = subscribeToZeezaPosts(() => {
-      setPosts(loadZeezaPosts());
-    });
-    return unsubscribe;
+  const revokeObjectUrls = useCallback(() => {
+    mediaUrlRef.current.forEach((url) => URL.revokeObjectURL(url));
+    mediaUrlRef.current = [];
   }, []);
 
-  const handleDelete = (id: string) => {
-    deleteZeezaPost(id);
-    setOpenMenuId(null);
+  const hydratePosts = useCallback(async () => {
+    const metadata = loadZeezaPosts();
+    const createdUrls: string[] = [];
+    const enriched = await Promise.all(
+      metadata.map(async (post) => {
+        if (!post.mediaKey) {
+          if (post.mediaUrl) {
+            try {
+              const migrated = await migrateLegacyMedia(post);
+              if (migrated) {
+                const objectUrl = URL.createObjectURL(migrated.blob);
+                createdUrls.push(objectUrl);
+                return {
+                  ...post,
+                  mediaKey: migrated.mediaKey,
+                  mediaType: migrated.mediaType,
+                  mediaUrl: objectUrl,
+                };
+              }
+            } catch (migrationError) {
+              console.warn('Unable to migrate legacy media.', migrationError);
+              return { ...post, mediaUrl: post.mediaUrl };
+            }
+            return { ...post, mediaUrl: post.mediaUrl };
+          }
+          return { ...post, mediaUrl: null };
+        }
+        try {
+          const blob = await loadZeezaPostMedia(post.mediaKey);
+          if (!blob) {
+            return { ...post, mediaUrl: null };
+          }
+          const objectUrl = URL.createObjectURL(blob);
+          createdUrls.push(objectUrl);
+          return { ...post, mediaUrl: objectUrl, mediaType: post.mediaType ?? blob.type };
+        } catch (loadError) {
+          console.warn('Unable to load media for admin console.', loadError);
+          return { ...post, mediaUrl: null };
+        }
+      })
+    );
+    revokeObjectUrls();
+    mediaUrlRef.current = createdUrls;
+    setPosts(enriched);
+  }, [revokeObjectUrls]);
+
+  useEffect(() => {
+    hydratePosts().catch((error) => {
+      console.warn('Unable to load admin posts.', error);
+    });
+    const unsubscribe = subscribeToZeezaPosts(() => {
+      hydratePosts().catch((error) => {
+        console.warn('Unable to load admin posts.', error);
+      });
+    });
+    return () => {
+      unsubscribe();
+      revokeObjectUrls();
+    };
+  }, [hydratePosts, revokeObjectUrls]);
+
+  const handleDelete = async (id: string) => {
+    try {
+      await deleteZeezaPost(id);
+      setOpenMenuId(null);
+    } catch (deleteError) {
+      console.error('Unable to delete post.', deleteError);
+      setError('Unable to delete the post. Try again.');
+    }
   };
 
   const dragHandlers = {
@@ -404,14 +475,21 @@ const ZeezaPost: React.FC = () => {
               <ul className="zeeza-posts-list">
                 {posts.map((post) => {
                   const isMenuOpen = openMenuId === post.id;
-                  const isVideo = post.mediaUrl.startsWith('data:video') || /\.mp4($|\?)/i.test(post.mediaUrl);
+                  const isVideo =
+                    typeof post.mediaType === 'string'
+                      ? post.mediaType.startsWith('video/')
+                      : Boolean(post.mediaUrl && post.mediaUrl.startsWith('data:video'));
                   return (
                     <li key={post.id} className="zeeza-posts-item">
                       <div className="zeeza-posts-media">
-                        {isVideo ? (
-                          <video src={post.mediaUrl} playsInline muted loop />
+                        {post.mediaUrl ? (
+                          isVideo ? (
+                            <video src={post.mediaUrl} playsInline muted loop controls />
+                          ) : (
+                            <img src={post.mediaUrl} alt={post.caption} />
+                          )
                         ) : (
-                          <img src={post.mediaUrl} alt={post.caption} />
+                          <div className="zeeza-posts-placeholder">No media</div>
                         )}
                       </div>
                       <div className="zeeza-posts-body">
@@ -457,6 +535,16 @@ const ZeezaPost: React.FC = () => {
 };
 
 export default ZeezaPost;
+
+
+
+
+
+
+
+
+
+
 
 
 
