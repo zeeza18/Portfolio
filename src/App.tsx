@@ -15,6 +15,7 @@ import Reading from './pages/Reading';
 import Blogs from './pages/Blogs';
 import Certifications from './pages/Certifications';
 import Transformer from './pages/Transformer';
+import ZeezaPost from './pages/ZeezaPost';
 
 const AppRoutes: React.FC = () => {
   const location = useLocation();
@@ -35,6 +36,7 @@ const AppRoutes: React.FC = () => {
       <Route path="/blogs" element={<Layout><Blogs /></Layout>} />
       <Route path="/blogs/transformer" element={<Layout><Transformer /></Layout>} />
       <Route path="/certifications" element={<Layout><Certifications /></Layout>} />
+      <Route path="/zeeza_post" element={<ZeezaPost />} />
     </Routes>
   );
 };

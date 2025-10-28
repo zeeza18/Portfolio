@@ -1,0 +1,393 @@
+.zeeza-admin {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 5vw, 4rem);
+  background: radial-gradient(circle at top, rgba(229, 9, 20, 0.12), rgba(5, 7, 16, 0.96));
+  color: var(--color-text, #f8fafc);
+  font-family: 'Space Grotesk', var(--font-body, system-ui);
+}
+
+.zeeza-card {
+  width: min(720px, 100%);
+  padding: clamp(2rem, 4vw, 3rem);
+  background: rgba(12, 14, 24, 0.95);
+  border-radius: 24px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 30px 60px rgba(0, 0, 0, 0.36);
+  display: grid;
+  gap: clamp(1.5rem, 4vw, 2.4rem);
+}
+
+.zeeza-header h1 {
+  margin: 0;
+  font-size: clamp(1.75rem, 3vw, 2.4rem);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.zeeza-header p {
+  margin: 0.4rem 0 0;
+  color: rgba(255, 255, 255, 0.72);
+  font-size: 0.98rem;
+}
+
+.zeeza-form {
+  display: grid;
+  gap: clamp(1rem, 3vw, 1.6rem);
+}
+
+.zeeza-fieldset {
+  margin: 0;
+  padding: clamp(1.2rem, 3vw, 1.8rem);
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(15, 17, 28, 0.75);
+  display: grid;
+  gap: clamp(1rem, 3vw, 1.6rem);
+  min-inline-size: auto;
+}
+
+.zeeza-fieldset legend {
+  font-size: 0.8rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+  padding: 0 0.6rem;
+}
+
+.zeeza-label {
+  display: grid;
+  gap: 0.5rem;
+  font-size: 0.85rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.zeeza-input,
+.zeeza-textarea {
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  background: rgba(5, 7, 16, 0.72);
+  color: inherit;
+  font-size: 1rem;
+  resize: vertical;
+  transition: border 0.2s ease, box-shadow 0.2s ease;
+}
+
+.zeeza-input:focus,
+.zeeza-textarea:focus {
+  outline: none;
+  border-color: rgba(229, 9, 20, 0.45);
+  box-shadow: 0 0 0 3px rgba(229, 9, 20, 0.25);
+}
+
+.zeeza-input[readonly] {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.zeeza-hex-preview {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border-radius: 12px;
+  background: rgba(229, 9, 20, 0.12);
+  border: 1px solid rgba(229, 9, 20, 0.25);
+  font-family: 'Space Grotesk', Menlo, Consolas, monospace;
+  font-size: 0.85rem;
+  white-space: break-spaces;
+}
+
+.zeeza-hex-preview code {
+  font-size: 0.82rem;
+  overflow-wrap: anywhere;
+}
+
+.zeeza-dropzone {
+  position: relative;
+  padding: clamp(1.8rem, 4vw, 2.4rem);
+  border-radius: 16px;
+  border: 2px dashed rgba(255, 255, 255, 0.16);
+  background: rgba(8, 10, 18, 0.72);
+  text-align: center;
+  cursor: pointer;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.zeeza-dropzone input[type='file'] {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.zeeza-dropzone p {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.7);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.9rem;
+}
+
+.zeeza-dropzone.drag-active {
+  border-color: rgba(132, 204, 22, 0.9);
+  background: rgba(46, 64, 11, 0.45);
+}
+
+.zeeza-preview {
+  display: grid;
+  place-items: center;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(5, 7, 16, 0.6);
+}
+
+.zeeza-preview img,
+.zeeza-preview video {
+  width: 100%;
+  max-height: 360px;
+  object-fit: cover;
+}
+
+.zeeza-actions {
+  display: flex;
+  gap: 1rem;
+  justify-content: flex-end;
+  flex-wrap: wrap;
+}
+
+.zeeza-primary,
+.zeeza-secondary {
+  padding: 0.85rem 1.8rem;
+  border-radius: 999px;
+  border: 1px solid transparent;
+  font-size: 0.95rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, border 0.2s ease;
+}
+
+.zeeza-primary {
+  background: linear-gradient(90deg, #e50914, #f97316);
+  border-color: rgba(229, 9, 20, 0.65);
+  color: #fff;
+  box-shadow: 0 12px 32px rgba(229, 9, 20, 0.35);
+}
+
+.zeeza-primary:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 18px 36px rgba(229, 9, 20, 0.45);
+}
+
+.zeeza-secondary {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.24);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+.zeeza-secondary:hover {
+  transform: translateY(-2px);
+  border-color: rgba(255, 255, 255, 0.38);
+}
+
+.zeeza-alert {
+  margin: 0;
+  padding: 0.8rem 1rem;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  letter-spacing: 0.04em;
+}
+
+.zeeza-alert.error {
+  background: rgba(229, 9, 20, 0.18);
+  border: 1px solid rgba(229, 9, 20, 0.45);
+}
+
+.zeeza-alert.notice {
+  background: rgba(96, 165, 250, 0.18);
+  border: 1px solid rgba(59, 130, 246, 0.45);
+}
+
+.zeeza-posts {
+  display: grid;
+  gap: 1.4rem;
+}
+
+.zeeza-posts-header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.zeeza-posts-header h2 {
+  margin: 0;
+  font-size: clamp(1.1rem, 2.4vw, 1.4rem);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.zeeza-posts-header span {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.zeeza-posts-empty {
+  margin: 0;
+  padding: 1rem 1.4rem;
+  border-radius: 14px;
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  background: rgba(8, 10, 18, 0.6);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.92rem;
+  letter-spacing: 0.06em;
+}
+
+.zeeza-posts-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: 1.2rem;
+}
+
+.zeeza-posts-item {
+  display: grid;
+  grid-template-columns: minmax(120px, 160px) 1fr;
+  gap: 1.2rem;
+  padding: 1.2rem;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(12, 14, 24, 0.7);
+}
+
+.zeeza-posts-media {
+  position: relative;
+  overflow: hidden;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: rgba(5, 7, 16, 0.7);
+}
+
+.zeeza-posts-media img,
+.zeeza-posts-media video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.zeeza-posts-body {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.zeeza-posts-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+}
+
+.zeeza-posts-meta time {
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.zeeza-posts-actions {
+  position: relative;
+}
+
+.zeeza-posts-menu-button {
+  border: none;
+  background: rgba(255, 255, 255, 0.08);
+  color: rgba(255, 255, 255, 0.85);
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 999px;
+  font-size: 1.2rem;
+  line-height: 1;
+  display: grid;
+  place-items: center;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.zeeza-posts-menu-button:hover {
+  background: rgba(229, 9, 20, 0.24);
+  transform: translateY(-1px);
+}
+
+.zeeza-posts-menu {
+  position: absolute;
+  top: 110%;
+  right: 0;
+  display: grid;
+  background: rgba(8, 10, 18, 0.94);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 12px;
+  padding: 0.35rem;
+  min-width: 140px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, 0.35);
+  z-index: 10;
+}
+
+.zeeza-posts-menu-item {
+  padding: 0.65rem 0.9rem;
+  border: none;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.85);
+  font-size: 0.9rem;
+  letter-spacing: 0.06em;
+  text-align: left;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.zeeza-posts-menu-item:hover {
+  background: rgba(229, 9, 20, 0.16);
+}
+
+.zeeza-posts-menu-item.danger {
+  color: #fca5a5;
+}
+
+.zeeza-posts-caption {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+@media (max-width: 640px) {
+  .zeeza-card {
+    padding: clamp(1.8rem, 6vw, 2.4rem);
+  }
+
+  .zeeza-actions {
+    flex-direction: column-reverse;
+    align-items: stretch;
+  }
+
+  .zeeza-primary,
+  .zeeza-secondary {
+    width: 100%;
+    text-align: center;
+  }
+
+  .zeeza-posts-item {
+    grid-template-columns: 1fr;
+  }
+}

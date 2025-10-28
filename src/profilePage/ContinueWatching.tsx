@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import './ContinueWatching.css';
+import lifeImage from '../images/social-life.png';
 import readingImage from '../images/reading-paper.png';
 import blogsImage from '../images/blog.png';
 import contactImage from '../images/contact-me.png';
@@ -16,23 +17,22 @@ type ContinueWatchingItem = { title: string; link: string; imgSrc?: string };
 
 const continueWatchingConfig: Record<ProfileType, ContinueWatchingItem[]> = {
   recruiter: [
-    { title: "Social", link: "/social" },
+    { title: "Social", imgSrc: lifeImage, link: "/social" },
     { title: "Reading", imgSrc: readingImage, link: "/reading" },
     { title: "Blogs", imgSrc: blogsImage, link: "/blogs" },
     { title: "Contact Me", imgSrc: contactImage, link: "/contact-me" }
   ],
   developer: [
-    { title: "Social", link: "/social" },
+    { title: "Social", imgSrc: lifeImage, link: "/social" },
     { title: "Reading", imgSrc: readingImage, link: "/reading" },
     { title: "Blogs", imgSrc: blogsImage, link: "/blogs" },
     { title: "Certifications", imgSrc: certificationsImage, link: "/certifications" },
     { title: "Contact Me", imgSrc: contactImage, link: "/contact-me" }
   ],
   stalker: [
-    { title: "Social", link: "/social" },
+    { title: "Social", imgSrc: lifeImage, link: "/social" },
     { title: "Reading", imgSrc: readingImage, link: "/reading" },
-    { title: "Blogs", imgSrc: blogsImage, link: "/blogs" },
-    { title: "Contact Me", imgSrc: contactImage, link: "/contact-me" }
+    { title: "Blogs", imgSrc: blogsImage, link: "/blogs" }
   ],
 };
 
