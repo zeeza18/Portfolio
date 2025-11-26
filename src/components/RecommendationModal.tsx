@@ -67,13 +67,6 @@ const RecommendationModal: React.FC<RecommendationModalProps> = ({ isOpen, onClo
             </ul>
           </div>
 
-          <div className="recommendation-modal-section">
-            <h3>Recent Experience</h3>
-            <p className="recommendation-modal-experience">
-              Currently working on enterprise ML systems, building intelligent automation solutions with LangChain, CrewAI, and containerized inference. Proven track record of reducing incident recovery times by 70%+ through innovative QA automation.
-            </p>
-          </div>
-
           <div className="recommendation-modal-cta">
             <p>Your recommendation helps others understand my work and impact.</p>
             <a
