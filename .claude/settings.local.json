@@ -4,7 +4,8 @@
       "Bash(find:*)",
       "Bash(move \"C:\\Users\\azeez\\PROJECTS\\PORTFOLIO\\PUBLICATIONS_HEADER.png\" \"C:\\Users\\azeez\\PROJECTS\\PORTFOLIO\\src\\images\\PUBLICATIONS_HEADER.png\")",
       "Bash(move \"C:\\Users\\azeez\\PROJECTS\\PORTFOLIO\\.ENV\" \"C:\\Users\\azeez\\PROJECTS\\PORTFOLIO\\.env\")",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(git checkout:*)"
     ],
     "deny": [],
     "ask": []

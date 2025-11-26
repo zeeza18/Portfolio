@@ -117,9 +117,11 @@ const Social: React.FC = () => {
           <video
             className="social-media media-video"
             src={post.mediaUrl}
-            controls
+            autoPlay
+            muted
+            loop
             playsInline
-            preload="metadata"
+            preload="auto"
           />
         ) : (
           <img
