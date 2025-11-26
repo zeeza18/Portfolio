@@ -3,8 +3,6 @@ import './ZeezaPost.css';
 import {
   addZeezaPost,
   deleteZeezaPost,
-  loadZeezaPostMedia,
-  migrateLegacyMedia,
   loadZeezaPosts,
   subscribeToZeezaPosts,
   ZeezaPost as ZeezaPostType,
@@ -207,8 +205,7 @@ const ZeezaPost: React.FC = () => {
         const captionText = caption.trim() || 'Untitled moment';
         const mediaKey = mediaFile ? `media-${now.getTime()}-${Math.random().toString(36).slice(2, 8)}` : null;
 
-        const post: ZeezaPostType = {
-          id: `zeeza-${now.getTime()}`,
+        const post = {
           caption: captionText,
           date: displayDate,
           createdAt: now.toISOString(),
@@ -263,50 +260,9 @@ const ZeezaPost: React.FC = () => {
   }, []);
 
   const hydratePosts = useCallback(async () => {
-    const metadata = loadZeezaPosts();
-    const createdUrls: string[] = [];
-    const enriched = await Promise.all(
-      metadata.map(async (post) => {
-        if (!post.mediaKey) {
-          if (post.mediaUrl) {
-            try {
-              const migrated = await migrateLegacyMedia(post);
-              if (migrated) {
-                const objectUrl = URL.createObjectURL(migrated.blob);
-                createdUrls.push(objectUrl);
-                return {
-                  ...post,
-                  mediaKey: migrated.mediaKey,
-                  mediaType: migrated.mediaType,
-                  mediaUrl: objectUrl,
-                };
-              }
-            } catch (migrationError) {
-              console.warn('Unable to migrate legacy media.', migrationError);
-              return { ...post, mediaUrl: post.mediaUrl };
-            }
-            return { ...post, mediaUrl: post.mediaUrl };
-          }
-          return { ...post, mediaUrl: null };
-        }
-        try {
-          const blob = await loadZeezaPostMedia(post.mediaKey);
-          if (!blob) {
-            return { ...post, mediaUrl: null };
-          }
-          const objectUrl = URL.createObjectURL(blob);
-          createdUrls.push(objectUrl);
-          return { ...post, mediaUrl: objectUrl, mediaType: post.mediaType ?? blob.type };
-        } catch (loadError) {
-          console.warn('Unable to load media for admin console.', loadError);
-          return { ...post, mediaUrl: null };
-        }
-      })
-    );
-    revokeObjectUrls();
-    mediaUrlRef.current = createdUrls;
-    setPosts(enriched);
-  }, [revokeObjectUrls]);
+    const metadata = await loadZeezaPosts();
+    setPosts(metadata as ZeezaPostEntry[]);
+  }, []);
 
   useEffect(() => {
     hydratePosts().catch((error) => {

@@ -2,8 +2,6 @@ import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import './Social.css';
 import {
   loadZeezaPosts,
-  loadZeezaPostMedia,
-  migrateLegacyMedia,
   subscribeToZeezaPosts,
   updateZeezaPost,
   ZeezaPost as ZeezaPostType,
@@ -26,51 +24,10 @@ const Social: React.FC = () => {
   }, []);
 
   const hydratePosts = useCallback(async () => {
-    const metadata = loadZeezaPosts();
-    const createdUrls: string[] = [];
-    const enriched = await Promise.all(
-      metadata.map(async (post) => {
-        if (!post.mediaKey) {
-          if (post.mediaUrl) {
-            try {
-              const migrated = await migrateLegacyMedia(post);
-              if (migrated) {
-                const objectUrl = URL.createObjectURL(migrated.blob);
-                createdUrls.push(objectUrl);
-                return {
-                  ...post,
-                  mediaKey: migrated.mediaKey,
-                  mediaType: migrated.mediaType,
-                  mediaUrl: objectUrl,
-                };
-              }
-            } catch (migrationError) {
-              console.warn('Unable to migrate legacy media.', migrationError);
-              return { ...post, mediaUrl: post.mediaUrl };
-            }
-            return { ...post, mediaUrl: post.mediaUrl };
-          }
-          return { ...post, mediaUrl: null };
-        }
-        try {
-          const blob = await loadZeezaPostMedia(post.mediaKey);
-          if (!blob) {
-            return { ...post, mediaUrl: null };
-          }
-          const objectUrl = URL.createObjectURL(blob);
-          createdUrls.push(objectUrl);
-          return { ...post, mediaUrl: objectUrl, mediaType: post.mediaType ?? blob.type };
-        } catch (error) {
-          console.warn('Unable to load post media.', error);
-          return { ...post, mediaUrl: null };
-        }
-      })
-    );
-    revokeObjectUrls();
-    mediaUrlRef.current = createdUrls;
-    setPosts(enriched);
+    const metadata = await loadZeezaPosts();
+    setPosts(metadata as SocialPost[]);
     setInitialized(true);
-  }, [revokeObjectUrls]);
+  }, []);
 
   useEffect(() => {
     hydratePosts().catch((error) => {

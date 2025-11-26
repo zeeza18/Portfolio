@@ -1,65 +1,47 @@
-const DB_NAME = 'zeezaPostMedia';
-const STORE_NAME = 'media';
-const DB_VERSION = 1;
+const isBrowser = typeof window !== 'undefined';
 
-const isBrowser = typeof window !== 'undefined' && 'indexedDB' in window;
+const CLOUDINARY_CLOUD_NAME = process.env.REACT_APP_CLOUDINARY_CLOUD_NAME;
+const CLOUDINARY_UPLOAD_PRESET = process.env.REACT_APP_CLOUDINARY_UPLOAD_PRESET;
 
-const openDatabase = (): Promise<IDBDatabase> =>
-  new Promise((resolve, reject) => {
-    if (!isBrowser) {
-      reject(new Error('IndexedDB is not available.'));
-      return;
+export const saveMediaBlob = async (key: string, blob: Blob): Promise<string> => {
+  if (!isBrowser) throw new Error('Not in browser environment');
+
+  if (!CLOUDINARY_CLOUD_NAME || !CLOUDINARY_UPLOAD_PRESET) {
+    throw new Error('Cloudinary configuration missing');
+  }
+
+  const formData = new FormData();
+  formData.append('file', blob);
+  formData.append('upload_preset', CLOUDINARY_UPLOAD_PRESET);
+  formData.append('public_id', key);
+  formData.append('folder', 'zeeza-media');
+
+  try {
+    const response = await fetch(
+      `https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/upload`,
+      {
+        method: 'POST',
+        body: formData,
+      }
+    );
+
+    if (!response.ok) {
+      throw new Error(`Cloudinary upload failed: ${response.statusText}`);
     }
 
-    const request = window.indexedDB.open(DB_NAME, DB_VERSION);
-
-    request.onupgradeneeded = () => {
-      const db = request.result;
-      if (!db.objectStoreNames.contains(STORE_NAME)) {
-        db.createObjectStore(STORE_NAME);
-      }
-    };
-
-    request.onsuccess = () => resolve(request.result);
-    request.onerror = () => reject(request.error ?? new Error('Unable to open media database.'));
-  });
-
-export const saveMediaBlob = async (key: string, blob: Blob) => {
-  if (!isBrowser) return;
-  const db = await openDatabase();
-  await new Promise<void>((resolve, reject) => {
-    const transaction = db.transaction(STORE_NAME, 'readwrite');
-    const store = transaction.objectStore(STORE_NAME);
-    const request = store.put(blob, key);
-    transaction.oncomplete = () => resolve();
-    transaction.onerror = () => reject(transaction.error ?? new Error('Unable to store media blob.'));
-    request.onerror = () => reject(request.error ?? new Error('Unable to store media blob.'));
-  });
+    const data = await response.json();
+    return data.secure_url;
+  } catch (error) {
+    console.error('Error uploading to Cloudinary:', error);
+    throw error;
+  }
 };
 
 export const loadMediaBlob = async (key: string): Promise<Blob | null> => {
-  if (!isBrowser) return null;
-  const db = await openDatabase();
-  return new Promise<Blob | null>((resolve, reject) => {
-    const transaction = db.transaction(STORE_NAME, 'readonly');
-    const store = transaction.objectStore(STORE_NAME);
-    const request = store.get(key);
-    request.onsuccess = () => {
-      resolve(request.result ?? null);
-    };
-    request.onerror = () => reject(request.error ?? new Error('Unable to load media blob.'));
-  });
+  return null;
 };
 
-export const deleteMediaBlob = async (key: string) => {
-  if (!isBrowser) return;
-  const db = await openDatabase();
-  await new Promise<void>((resolve, reject) => {
-    const transaction = db.transaction(STORE_NAME, 'readwrite');
-    const store = transaction.objectStore(STORE_NAME);
-    store.delete(key);
-    transaction.oncomplete = () => resolve();
-    transaction.onerror = () => reject(transaction.error ?? new Error('Unable to delete media blob.'));
-  });
+export const deleteMediaBlob = async (key: string): Promise<void> => {
+  console.warn('Cloudinary deletion not implemented. Manually delete from Cloudinary dashboard if needed.');
 };
 

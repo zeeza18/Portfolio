@@ -1,4 +1,16 @@
 ﻿import { deleteMediaBlob, loadMediaBlob, saveMediaBlob } from './zeezaMedia';
+import { db } from '../config/firebase';
+import {
+  collection,
+  addDoc,
+  getDocs,
+  doc,
+  updateDoc,
+  deleteDoc,
+  query,
+  orderBy,
+  onSnapshot,
+} from 'firebase/firestore';
 
 export type ZeezaPost = {
   id: string;
@@ -7,12 +19,12 @@ export type ZeezaPost = {
   createdAt: string;
   mediaKey?: string | null;
   mediaType?: string | null;
-  likes: number;
   mediaUrl?: string | null;
+  likes: number;
   liked?: boolean;
 };
 
-const STORAGE_KEY = 'zeezaPosts';
+const POSTS_COLLECTION = 'zeezaPosts';
 const POSTS_UPDATED_EVENT = 'zeeza-posts-updated';
 
 type PostUpdate = Partial<Omit<ZeezaPost, 'id' | 'createdAt'>> & {
@@ -37,69 +49,91 @@ const dataUrlToBlob = (dataUrl: string): Blob => {
   return new Blob([bytes], { type: mime });
 };
 
-const sortPosts = (posts: ZeezaPost[]) =>
-  [...posts].sort(
-    (a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-  );
-
-export const loadZeezaPosts = (): ZeezaPost[] => {
-  if (!isBrowser) return [];
-  try {
-    const stored = window.localStorage.getItem(STORAGE_KEY);
-    if (!stored) return [];
-    const parsed = JSON.parse(stored) as ZeezaPost[] | undefined;
-    if (!Array.isArray(parsed)) return [];
-    return sortPosts(
-      parsed
-        .filter((entry): entry is ZeezaPost => Boolean(entry && entry.id && entry.createdAt))
-        .map((entry) => ({
-          ...entry,
-          likes: typeof entry.likes === 'number' ? entry.likes : 0,
-          liked: Boolean(entry.liked),
-        }))
-    );
-  } catch (error) {
-    console.warn('Unable to load Zeeza posts from storage.', error);
-    return [];
-  }
-};
-
 const dispatchPostsUpdated = () => {
   if (!isBrowser) return;
   window.dispatchEvent(new Event(POSTS_UPDATED_EVENT));
 };
 
-export const saveZeezaPosts = (posts: ZeezaPost[]) => {
-  if (!isBrowser) return;
-  window.localStorage.setItem(STORAGE_KEY, JSON.stringify(sortPosts(posts)));
-  dispatchPostsUpdated();
-};
-
-export const addZeezaPost = async (post: ZeezaPost, media?: Blob) => {
-  const posts = loadZeezaPosts();
-  const nextPosts = sortPosts([post, ...posts]);
-  if (media && post.mediaKey) {
-    await saveMediaBlob(post.mediaKey, media);
+export const loadZeezaPosts = async (): Promise<ZeezaPost[]> => {
+  if (!isBrowser) return [];
+  try {
+    const postsQuery = query(collection(db, POSTS_COLLECTION), orderBy('createdAt', 'desc'));
+    const querySnapshot = await getDocs(postsQuery);
+    const posts: ZeezaPost[] = [];
+    querySnapshot.forEach((docSnapshot) => {
+      const data = docSnapshot.data();
+      posts.push({
+        id: docSnapshot.id,
+        caption: data.caption || '',
+        date: data.date || '',
+        createdAt: data.createdAt || new Date().toISOString(),
+        mediaKey: data.mediaKey || null,
+        mediaType: data.mediaType || null,
+        mediaUrl: data.mediaUrl || null,
+        likes: typeof data.likes === 'number' ? data.likes : 0,
+        liked: Boolean(data.liked),
+      });
+    });
+    return posts;
+  } catch (error) {
+    console.warn('Unable to load Zeeza posts from Firestore.', error);
+    return [];
   }
-  saveZeezaPosts(nextPosts);
 };
 
-export const updateZeezaPost = (id: string, updates: PostUpdate) => {
-  const posts = loadZeezaPosts();
-  const next = posts.map((post) =>
-    post.id === id ? { ...post, ...updates } : post
-  );
-  saveZeezaPosts(next);
+export const addZeezaPost = async (post: Omit<ZeezaPost, 'id'>, media?: Blob) => {
+  try {
+    let mediaUrl = null;
+    if (media && post.mediaKey) {
+      mediaUrl = await saveMediaBlob(post.mediaKey, media);
+    }
+
+    const postData = {
+      caption: post.caption,
+      date: post.date,
+      createdAt: post.createdAt,
+      mediaKey: post.mediaKey || null,
+      mediaType: post.mediaType || null,
+      mediaUrl: mediaUrl,
+      likes: post.likes || 0,
+      liked: post.liked || false,
+    };
+
+    await addDoc(collection(db, POSTS_COLLECTION), postData);
+    dispatchPostsUpdated();
+  } catch (error) {
+    console.error('Unable to add post to Firestore:', error);
+    throw error;
+  }
+};
+
+export const updateZeezaPost = async (id: string, updates: PostUpdate) => {
+  try {
+    const postRef = doc(db, POSTS_COLLECTION, id);
+    await updateDoc(postRef, updates);
+    dispatchPostsUpdated();
+  } catch (error) {
+    console.error('Unable to update post in Firestore:', error);
+    throw error;
+  }
 };
 
 export const deleteZeezaPost = async (id: string) => {
-  const posts = loadZeezaPosts();
-  const target = posts.find((post) => post.id === id);
-  const next = posts.filter((post) => post.id !== id);
-  if (target?.mediaKey) {
-    await deleteMediaBlob(target.mediaKey);
+  try {
+    const posts = await loadZeezaPosts();
+    const target = posts.find((post) => post.id === id);
+
+    if (target?.mediaKey) {
+      await deleteMediaBlob(target.mediaKey);
+    }
+
+    const postRef = doc(db, POSTS_COLLECTION, id);
+    await deleteDoc(postRef);
+    dispatchPostsUpdated();
+  } catch (error) {
+    console.error('Unable to delete post from Firestore:', error);
+    throw error;
   }
-  saveZeezaPosts(next);
 };
 
 export const loadZeezaPostMedia = (mediaKey: string) => loadMediaBlob(mediaKey);
@@ -110,11 +144,11 @@ export const migrateLegacyMedia = async (post: ZeezaPost) => {
   try {
     const blob = dataUrlToBlob(post.mediaUrl);
     const mediaKey = `media-${post.id}`;
-    await saveMediaBlob(mediaKey, blob);
-    updateZeezaPost(post.id, {
+    const mediaUrl = await saveMediaBlob(mediaKey, blob);
+    await updateZeezaPost(post.id, {
       mediaKey,
       mediaType: blob.type,
-      mediaUrl: null,
+      mediaUrl: mediaUrl,
     });
     return { blob, mediaKey, mediaType: blob.type };
   } catch (error) {
@@ -126,12 +160,16 @@ export const migrateLegacyMedia = async (post: ZeezaPost) => {
 export const subscribeToZeezaPosts = (callback: () => void) => {
   if (!isBrowser) return () => undefined;
 
+  const postsQuery = query(collection(db, POSTS_COLLECTION), orderBy('createdAt', 'desc'));
+  const unsubscribeSnapshot = onSnapshot(postsQuery, () => {
+    callback();
+  });
+
   const handler = () => callback();
   window.addEventListener(POSTS_UPDATED_EVENT, handler);
-  window.addEventListener('storage', handler);
 
   return () => {
+    unsubscribeSnapshot();
     window.removeEventListener(POSTS_UPDATED_EVENT, handler);
-    window.removeEventListener('storage', handler);
   };
 };
