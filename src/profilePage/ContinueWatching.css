@@ -145,6 +145,12 @@
   letter-spacing: 0.06em;
   color: var(--color-text);
   text-transform: uppercase;
+  font-size: clamp(0.75rem, 1.8vw, 0.95rem);
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  hyphens: auto;
+  max-width: 100%;
+  line-height: 1.3;
 }
 
 @media (max-width: 768px) {
@@ -162,5 +168,26 @@
 
   .pick-card {
     width: clamp(160px, 40vw, 220px);
+  }
+
+  .continue-watching-row .pick-label {
+    font-size: 0.8rem;
+    letter-spacing: 0.04em;
+    padding-right: 0.5rem;
+  }
+
+  .continue-watching-row .overlay {
+    padding: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .continue-watching-row .pick-card {
+    width: clamp(140px, 45vw, 180px);
+  }
+
+  .continue-watching-row .pick-label {
+    font-size: 0.7rem;
+    letter-spacing: 0.03em;
   }
 }
