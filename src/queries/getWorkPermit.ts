@@ -13,12 +13,12 @@ const GET_WORK_PERMIT = `
 `;
 
 const FALLBACK_WORK_PERMIT: WorkPermit = {
-  visaStatus: 'F-1 STEM OPT (EAD pending) | Work authorization through Jan 1, 2029',
+  visaStatus: 'F-1 STEM OPT (EAD starts Jan 19, 2026) | Work authorization through Jan 1, 2029',
   expiryDate: new Date('2029-01-01') as unknown as Date,
   summary:
-    'International student from India graduating in November and entering the STEM OPT window with the EAD card currently pending.',
+    'International student from India graduating in November. EAD card starts January 19, 2026, entering the STEM OPT window.',
   additionalInfo:
-    'Maintains F-1 status through Jan 1, 2029 and can work full time on STEM OPT once the EAD is issued; open to long-term sponsorship conversations.',
+    'Maintains F-1 status through Jan 1, 2029 and can work full time on STEM OPT starting January 19, 2026; open to long-term sponsorship conversations.',
 };
 
 export async function getWorkPermit(): Promise<WorkPermit> {

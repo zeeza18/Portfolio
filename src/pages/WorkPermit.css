@@ -5,26 +5,23 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 6vw, 4rem);
+  padding: clamp(8rem, 12vw, 10rem) clamp(1.5rem, 6vw, 4rem) clamp(3rem, 8vw, 6rem);
   z-index: 1000;
 }
 
 .work-permit-card {
   position: relative;
-  max-width: min(960px, 100%);
+  max-width: min(600px, 100%);
   width: 100%;
-  padding: clamp(2.4rem, 5vw, 3.2rem);
+  padding: clamp(2rem, 4vw, 2.5rem);
   border-radius: var(--radius-lg);
   background: linear-gradient(140deg, rgba(18, 19, 32, 0.86), rgba(18, 19, 32, 0.6));
   border: 1px solid rgba(255, 255, 255, 0.09);
   box-shadow: var(--shadow-soft);
   color: var(--color-text);
   backdrop-filter: blur(14px);
-  overflow: hidden;
-  display: grid;
-  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1fr);
-  gap: clamp(1.5rem, 3vw, 2.2rem);
-  align-items: center;
+  overflow: visible;
+  transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
 .work-permit-card::before {
@@ -37,102 +34,91 @@
   pointer-events: none;
 }
 
-.work-permit-media {
-  position: relative;
-  border-radius: calc(var(--radius-lg) * 0.8);
-  overflow: hidden;
-  box-shadow: 0 24px 50px rgba(0, 0, 0, 0.35);
-  isolation: isolate;
-}
-
-.work-permit-media::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(160deg, rgba(0, 0, 0, 0.04), rgba(0, 0, 0, 0.22));
-  opacity: 0.4;
-  pointer-events: none;
-}
-
-.work-permit-image {
-  width: 100%;
-  height: 100%;
-  display: block;
-  object-fit: cover;
-  transform: scale(1.02);
-  filter: brightness(1.12) contrast(1.06);
-  transition: transform 0.4s ease, filter 0.4s ease;
-}
-
-.work-permit-card:hover .work-permit-image {
-  transform: scale(1.06);
-  filter: brightness(1.18) contrast(1.08);
-}
-
 .work-permit-content {
-  display: flex;
-  flex-direction: column;
-  gap: clamp(1.1rem, 2vw, 1.6rem);
   position: relative;
   z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(1.2rem, 2.5vw, 1.6rem);
 }
 
 .work-permit-headline {
   position: relative;
-  font-size: clamp(1.6rem, 3vw, 2.2rem);
+  font-size: clamp(1.6rem, 3vw, 2rem);
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  margin: 0 0 1.5rem 0;
+  margin: 0;
+  color: var(--color-text);
 }
 
 .work-permit-summary {
-  position: relative;
-  font-size: clamp(1rem, 2vw, 1.1rem);
-  line-height: 1.8;
+  font-size: clamp(1rem, 2vw, 1.08rem);
+  line-height: 1.7;
   color: var(--color-muted);
   margin: 0;
 }
 
-.work-permit-summary strong {
-  color: var(--color-primary);
-}
-
 .work-permit-visa {
   display: block;
-  margin-top: 0.75rem;
-  font-size: 0.95rem;
-  letter-spacing: 0.02em;
+  font-size: clamp(0.95rem, 2vw, 1.02rem);
+  line-height: 1.6;
   color: rgba(255, 255, 255, 0.78);
+  margin: 0;
+}
+
+.work-permit-visa strong {
+  color: var(--color-primary);
+  font-weight: 600;
 }
 
 .work-permit-expiry {
+  font-size: clamp(0.95rem, 2vw, 1.02rem);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.78);
   margin: 0;
-  font-size: 0.95rem;
-  color: rgba(255, 255, 255, 0.72);
-  letter-spacing: 0.02em;
 }
 
 .work-permit-expiry strong {
   color: var(--color-primary);
+  font-weight: 600;
 }
 
 .additional-info {
-  position: relative;
-  margin-top: 1.6rem;
-  font-size: 0.95rem;
+  font-size: clamp(0.92rem, 2vw, 1rem);
+  line-height: 1.7;
   color: rgba(255, 255, 255, 0.72);
-  letter-spacing: 0.02em;
+  margin: 0;
 }
 
-@media (max-width: 820px) {
-  .work-permit-card {
-    grid-template-columns: 1fr;
-    max-width: 520px;
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .work-permit-container {
+    padding: 6rem 1rem 2rem;
   }
 
-  .work-permit-media {
-    order: -1;
-    aspect-ratio: 16 / 9;
+  .work-permit-card {
+    padding: 1.8rem 1.5rem;
+  }
+
+  .work-permit-content {
+    gap: 1.3rem;
+  }
+
+  .work-permit-headline {
+    font-size: 1.4rem;
+  }
+
+  .work-permit-summary {
+    font-size: 0.95rem;
+  }
+
+  .work-permit-visa,
+  .work-permit-expiry {
+    font-size: 0.9rem;
+  }
+
+  .additional-info {
+    font-size: 0.88rem;
   }
 }

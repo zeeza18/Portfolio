@@ -50,21 +50,17 @@ const RecommendationModal: React.FC<RecommendationModalProps> = ({ isOpen, onClo
         <div className="recommendation-modal-content">
           <h2 className="recommendation-modal-title">Recommend Me</h2>
 
-          <div className="recommendation-modal-section">
-            <p className="recommendation-modal-intro">
-              Ready to collaborate on the next intelligent system? If you've worked with me and would like to share your experience, I'd greatly appreciate a recommendation.
-            </p>
-          </div>
+          <p className="recommendation-modal-intro">
+            If you've worked with me and would like to share your experience, I'd greatly appreciate a recommendation.
+          </p>
 
-          <div className="recommendation-modal-section">
+          <div className="recommendation-modal-highlights">
             <h3>What I Bring</h3>
-            <ul className="recommendation-modal-list">
-              <li>Deep ML expertise paired with pragmatic engineering instincts</li>
-              <li>Experience architecting agentic QA initiatives and automation platforms</li>
-              <li>Ability to translate ambiguous requirements into reliable roadmaps</li>
-              <li>Collaborative style with cross-functional teams (designers, QA, DevOps)</li>
-              <li>Focus on tangible progress with clear documentation</li>
-            </ul>
+            <p>
+              Deep ML expertise with pragmatic engineering instincts. I architect intelligent automation platforms,
+              translate ambiguous requirements into reliable roadmaps, and collaborate seamlessly with cross-functional
+              teams to deliver tangible results with clear documentation.
+            </p>
           </div>
 
           <div className="recommendation-modal-cta">
@@ -78,10 +74,6 @@ const RecommendationModal: React.FC<RecommendationModalProps> = ({ isOpen, onClo
               <FaExternalLinkAlt /> Fill Recommendation Form
             </a>
           </div>
-
-          <p className="recommendation-modal-footer">
-            Let's share ideas over coffee or a whiteboard session. Thank you for taking the time!
-          </p>
         </div>
       </div>
     </div>

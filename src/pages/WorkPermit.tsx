@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import './WorkPermit.css';
 import { getWorkPermit } from '../queries/getWorkPermit';
 import { WorkPermit as IWorkPermit } from '../types';
-import workPermitApproved from '../images/work-permit-approved.png';
 
 const WorkPermit: React.FC = () => {
   const [workPermitData, setWorkPermitData] = useState<IWorkPermit | null>(null);
@@ -58,26 +57,19 @@ const WorkPermit: React.FC = () => {
       onPointerDown={handleBackdropPointerDown}
     >
       <div className="work-permit-card" ref={cardRef}>
-        <div className="work-permit-media">
-          <img
-            src={workPermitApproved}
-            alt="Work permit approved stamp"
-            className="work-permit-image"
-          />
-        </div>
         <div className="work-permit-content">
           <h2 className="work-permit-headline" id="work-permit-title">
             Work Authorization
           </h2>
           <p className="work-permit-summary">
-            {workPermitData.summary}{' '}
-            <span className="work-permit-visa">
-              Current status: <strong>{workPermitData.visaStatus}</strong>
-            </span>
+            {workPermitData.summary}
+          </p>
+          <p className="work-permit-visa">
+            Current status: <strong>{workPermitData.visaStatus}</strong>
           </p>
           <p className="work-permit-expiry">
             Authorization valid through{' '}
-            <strong>{new Date(workPermitData.expiryDate).toLocaleDateString()}</strong>.
+            <strong>{new Date(workPermitData.expiryDate).toLocaleDateString()}</strong>
           </p>
           <p className="additional-info">{workPermitData.additionalInfo}</p>
         </div>

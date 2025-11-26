@@ -5,24 +5,22 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: clamp(3rem, 8vw, 6rem) clamp(1.5rem, 6vw, 4rem);
+  padding: clamp(8rem, 12vw, 10rem) clamp(1.5rem, 6vw, 4rem) clamp(3rem, 8vw, 6rem);
   z-index: 1000;
 }
 
 .recommendation-modal {
   position: relative;
-  max-width: min(860px, 100%);
+  max-width: min(600px, 100%);
   width: 100%;
-  padding: clamp(2.4rem, 5vw, 3.2rem);
+  padding: clamp(2rem, 4vw, 2.5rem);
   border-radius: var(--radius-lg);
   background: linear-gradient(140deg, rgba(18, 19, 32, 0.86), rgba(18, 19, 32, 0.6));
   border: 1px solid rgba(255, 255, 255, 0.09);
   box-shadow: var(--shadow-soft);
   color: var(--color-text);
   backdrop-filter: blur(14px);
-  overflow: hidden;
-  max-height: 90vh;
-  overflow-y: auto;
+  overflow: visible;
   transition: transform 0.4s ease, opacity 0.4s ease;
 }
 
@@ -41,38 +39,43 @@
   z-index: 1;
   display: flex;
   flex-direction: column;
-  gap: clamp(1.1rem, 2vw, 1.6rem);
+  gap: clamp(1.5rem, 3vw, 2rem);
 }
 
 .recommendation-modal-title {
   position: relative;
-  font-size: clamp(1.8rem, 3vw, 2.4rem);
+  font-size: clamp(1.6rem, 3vw, 2rem);
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  margin: 0 0 1.5rem;
+  margin: 0;
   color: var(--color-text);
 }
 
-.recommendation-modal-section {
-  position: relative;
-  margin-bottom: 1.2rem;
+.recommendation-modal-intro {
+  font-size: clamp(1rem, 2vw, 1.08rem);
+  line-height: 1.7;
+  color: var(--color-muted);
+  margin: 0;
 }
 
-.recommendation-modal-section h3 {
+.recommendation-modal-highlights {
   position: relative;
-  font-size: clamp(1.15rem, 2vw, 1.4rem);
+}
+
+.recommendation-modal-highlights h3 {
+  font-size: clamp(1.1rem, 2vw, 1.3rem);
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
   color: var(--color-primary);
-  margin: 0 0 1rem;
+  margin: 0 0 0.8rem;
 }
 
-.recommendation-modal-intro {
-  font-size: clamp(1rem, 2vw, 1.1rem);
-  line-height: 1.8;
-  color: var(--color-muted);
+.recommendation-modal-highlights p {
+  font-size: clamp(0.95rem, 2vw, 1.02rem);
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.82);
   margin: 0;
 }
 
@@ -113,8 +116,7 @@
 
 .recommendation-modal-cta {
   position: relative;
-  margin-top: 2rem;
-  padding: clamp(1.8rem, 3vw, 2.4rem);
+  padding: clamp(1.5rem, 3vw, 2rem);
   border-radius: var(--radius-md);
   background: rgba(229, 9, 20, 0.08);
   border: 1px solid rgba(229, 9, 20, 0.18);
@@ -122,11 +124,11 @@
 }
 
 .recommendation-modal-cta p {
-  margin: 0 0 1.5rem;
-  font-size: clamp(1rem, 2vw, 1.1rem);
+  margin: 0 0 1.2rem;
+  font-size: clamp(0.95rem, 2vw, 1.05rem);
   font-weight: 600;
   color: var(--color-text);
-  line-height: 1.6;
+  line-height: 1.5;
 }
 
 .recommendation-modal-button {
@@ -158,68 +160,41 @@
   transform: translateY(-1px);
 }
 
-.recommendation-modal-footer {
-  position: relative;
-  margin-top: 1.8rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  font-size: clamp(0.9rem, 2vw, 0.98rem);
-  text-align: center;
-  color: rgba(255, 255, 255, 0.65);
-  letter-spacing: 0.02em;
-}
-
-/* Scrollbar styling */
-.recommendation-modal::-webkit-scrollbar {
-  width: 8px;
-}
-
-.recommendation-modal::-webkit-scrollbar-track {
-  background: rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-}
-
-.recommendation-modal::-webkit-scrollbar-thumb {
-  background: rgba(229, 9, 20, 0.4);
-  border-radius: 4px;
-  transition: background 0.3s ease;
-}
-
-.recommendation-modal::-webkit-scrollbar-thumb:hover {
-  background: rgba(229, 9, 20, 0.6);
-}
-
 /* Mobile responsive */
 @media (max-width: 768px) {
   .recommendation-modal-backdrop {
-    padding: clamp(1.5rem, 4vw, 2rem) clamp(1rem, 4vw, 1.5rem);
+    padding: 6rem 1rem 2rem;
   }
 
   .recommendation-modal {
-    padding: clamp(2rem, 4vw, 2.4rem);
-    max-height: 88vh;
+    padding: 1.8rem 1.5rem;
+  }
+
+  .recommendation-modal-content {
+    gap: 1.3rem;
   }
 
   .recommendation-modal-title {
-    font-size: 1.6rem;
-    margin-bottom: 1.2rem;
+    font-size: 1.4rem;
   }
 
-  .recommendation-modal-section h3 {
-    font-size: 1.1rem;
-  }
-
-  .recommendation-modal-list li {
-    font-size: 0.9rem;
-    margin-bottom: 0.65rem;
+  .recommendation-modal-intro {
+    font-size: 0.95rem;
   }
 
   .recommendation-modal-cta {
-    padding: 1.5rem 1.2rem;
+    padding: 1.3rem 1rem;
+  }
+
+  .recommendation-modal-cta p {
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
   }
 
   .recommendation-modal-button {
     width: 100%;
     justify-content: center;
+    padding: 0.85rem 1.5rem;
+    font-size: 0.9rem;
   }
 }
