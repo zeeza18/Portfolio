@@ -140,6 +140,40 @@
   animation: likeBurst 0.65s ease forwards;
 }
 
+.video-mute-button {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  width: 44px;
+  height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 50%;
+  color: #fff;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  z-index: 10;
+}
+
+.video-mute-button:hover {
+  background: rgba(229, 9, 20, 0.7);
+  border-color: rgba(229, 9, 20, 0.5);
+  transform: scale(1.1);
+}
+
+.video-mute-button:active {
+  transform: scale(0.95);
+}
+
+.video-mute-button svg {
+  width: 20px;
+  height: 20px;
+}
+
 .social-card-body {
   display: flex;
   flex-direction: column;

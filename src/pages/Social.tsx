@@ -3,16 +3,36 @@ import './Social.css';
 import {
   loadZeezaPosts,
   subscribeToZeezaPosts,
-  updateZeezaPost,
+  incrementLikes,
   ZeezaPost as ZeezaPostType,
 } from '../utils/zeezaPosts';
 
 type SocialPost = ZeezaPostType & { mediaUrl: string | null };
 
+const LIKED_POSTS_KEY = 'zeeza_liked_posts';
+
+const getLikedPosts = (): Set<string> => {
+  try {
+    const stored = localStorage.getItem(LIKED_POSTS_KEY);
+    return stored ? new Set(JSON.parse(stored)) : new Set();
+  } catch {
+    return new Set();
+  }
+};
+
+const saveLikedPosts = (likedPosts: Set<string>) => {
+  try {
+    localStorage.setItem(LIKED_POSTS_KEY, JSON.stringify(Array.from(likedPosts)));
+  } catch (error) {
+    console.warn('Unable to save liked posts to localStorage', error);
+  }
+};
+
 const Social: React.FC = () => {
   const [posts, setPosts] = useState<SocialPost[]>([]);
   const [initialized, setInitialized] = useState(false);
   const [activeHeartId, setActiveHeartId] = useState<string | null>(null);
+  const [mutedVideos, setMutedVideos] = useState<Record<string, boolean>>({});
   const heartTimeout = useRef<number | null>(null);
   const mediaUrlRef = useRef<string[]>([]);
 
@@ -25,7 +45,12 @@ const Social: React.FC = () => {
 
   const hydratePosts = useCallback(async () => {
     const metadata = await loadZeezaPosts();
-    setPosts(metadata as SocialPost[]);
+    const deviceLikedPosts = getLikedPosts();
+    const postsWithDeviceLikes = metadata.map((post) => ({
+      ...post,
+      liked: deviceLikedPosts.has(post.id),
+    }));
+    setPosts(postsWithDeviceLikes as SocialPost[]);
     setInitialized(true);
   }, []);
 
@@ -54,14 +79,32 @@ const Social: React.FC = () => {
     []
   );
 
+  const toggleMute = (id: string) => {
+    setMutedVideos((prev) => ({ ...prev, [id]: !prev[id] }));
+  };
+
   const toggleLike = (id: string, forceLiked?: boolean) => {
     setPosts((prev) =>
       prev.map((post) => {
         if (post.id !== id) return post;
         const nextLiked = typeof forceLiked === 'boolean' ? forceLiked : !post.liked;
         const delta = nextLiked === post.liked ? 0 : nextLiked ? 1 : -1;
+
+        if (delta !== 0) {
+          // Update localStorage
+          const deviceLikedPosts = getLikedPosts();
+          if (nextLiked) {
+            deviceLikedPosts.add(id);
+          } else {
+            deviceLikedPosts.delete(id);
+          }
+          saveLikedPosts(deviceLikedPosts);
+
+          // Atomically increment/decrement likes count in database
+          incrementLikes(id, delta);
+        }
+
         const likes = Math.max(0, post.likes + delta);
-        updateZeezaPost(id, { liked: nextLiked, likes });
         return { ...post, liked: nextLiked, likes };
       })
     );
@@ -114,15 +157,57 @@ const Social: React.FC = () => {
         aria-label="Double tap to like this post"
       >
         {isVideo ? (
-          <video
-            className="social-media media-video"
-            src={post.mediaUrl}
-            autoPlay
-            muted
-            loop
-            playsInline
-            preload="auto"
-          />
+          <>
+            <video
+              className="social-media media-video"
+              src={post.mediaUrl}
+              autoPlay
+              muted={mutedVideos[post.id] !== false}
+              loop
+              playsInline
+              preload="auto"
+            />
+            <button
+              type="button"
+              className="video-mute-button"
+              onClick={(e) => {
+                e.stopPropagation();
+                toggleMute(post.id);
+              }}
+              aria-label={mutedVideos[post.id] !== false ? 'Unmute video' : 'Mute video'}
+            >
+              {mutedVideos[post.id] !== false ? (
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                  <line x1="23" y1="9" x2="17" y2="15" />
+                  <line x1="17" y1="9" x2="23" y2="15" />
+                </svg>
+              ) : (
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  strokeWidth="2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                >
+                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5" />
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07" />
+                </svg>
+              )}
+            </button>
+          </>
         ) : (
           <img
             src={post.mediaUrl}

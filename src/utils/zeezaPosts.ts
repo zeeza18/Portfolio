@@ -10,6 +10,7 @@ import {
   query,
   orderBy,
   onSnapshot,
+  increment,
 } from 'firebase/firestore';
 
 export type ZeezaPost = {
@@ -114,6 +115,19 @@ export const updateZeezaPost = async (id: string, updates: PostUpdate) => {
     dispatchPostsUpdated();
   } catch (error) {
     console.error('Unable to update post in Firestore:', error);
+    throw error;
+  }
+};
+
+export const incrementLikes = async (id: string, delta: number) => {
+  try {
+    const postRef = doc(db, POSTS_COLLECTION, id);
+    await updateDoc(postRef, {
+      likes: increment(delta),
+    });
+    dispatchPostsUpdated();
+  } catch (error) {
+    console.error('Unable to increment likes in Firestore:', error);
     throw error;
   }
 };
