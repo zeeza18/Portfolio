@@ -6,7 +6,6 @@ import lifeImage from '../images/social-life.png';
 import readingImage from '../images/reading-paper.png';
 import blogsImage from '../images/blog.png';
 import contactImage from '../images/contact-me.png';
-import certificationsImage from '../images/certifications.jpeg';
 
 type ProfileType = 'recruiter' | 'developer' | 'stalker';
 
@@ -27,7 +26,6 @@ const continueWatchingConfig: Record<ProfileType, ContinueWatchingItem[]> = {
     { title: "Social", imgSrc: lifeImage, link: "/social" },
     { title: "Reading", imgSrc: readingImage, link: "/reading" },
     { title: "Blogs", imgSrc: blogsImage, link: "/blogs" },
-    { title: "Certifications", imgSrc: certificationsImage, link: "/certifications" },
     { title: "Contact", imgSrc: contactImage, link: "/contact-me" }
   ],
   stalker: [
