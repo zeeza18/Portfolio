@@ -5,7 +5,13 @@
       "Bash(move \"C:\\Users\\azeez\\PROJECTS\\PORTFOLIO\\PUBLICATIONS_HEADER.png\" \"C:\\Users\\azeez\\PROJECTS\\PORTFOLIO\\src\\images\\PUBLICATIONS_HEADER.png\")",
       "Bash(move \"C:\\Users\\azeez\\PROJECTS\\PORTFOLIO\\.ENV\" \"C:\\Users\\azeez\\PROJECTS\\PORTFOLIO\\.env\")",
       "Bash(mv:*)",
-      "Bash(git checkout:*)"
+      "Bash(git checkout:*)",
+      "Bash(npm run build:*)",
+      "Bash(npm start)",
+      "Bash(git add:*)",
+      "Bash(git commit -m \"$(cat <<''EOF''\nAdd video sound controls and fix per-device like tracking\n\n- Added mute/unmute button for videos with Instagram-style icon\n- Implemented per-device like tracking using localStorage\n- Fixed database like system to use atomic increments\n- Each device now independently tracks which posts it has liked\n- Global like count properly reflects total likes from all devices\n\n🤖 Generated with [Claude Code](https://claude.com/claude-code)\n\nCo-Authored-By: Claude <noreply@anthropic.com>\nEOF\n)\")",
+      "Bash(git push:*)",
+      "Bash(git commit:*)"
     ],
     "deny": [],
     "ask": []
