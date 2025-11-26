@@ -1,7 +1,8 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './TopPicksRow.css';
 import { FaPassport, FaCode, FaBriefcase, FaCertificate, FaHandsHelping, FaProjectDiagram, FaChevronLeft, FaChevronRight, FaFileAlt } from 'react-icons/fa';
+import RecommendationModal from '../components/RecommendationModal';
 import workPermitApproved from '../images/work-permit-approved.png';
 import skillsSoftHard from '../images/skills-soft-hard.png';
 import experienceImage from '../images/experience.png';
@@ -183,12 +184,21 @@ const TopPicksRow: React.FC<TopPicksRowProps> = ({ profile }) => {
   const navigate = useNavigate();
   const topPicks = topPicksConfig[profile];
   const rowRef = useRef<HTMLDivElement | null>(null);
+  const [isRecommendationModalOpen, setIsRecommendationModalOpen] = useState(false);
 
   const scrollRow = (direction: 'left' | 'right') => {
     const node = rowRef.current;
     if (!node) return;
     const amount = direction === 'left' ? -360 : 360;
     node.scrollBy({ left: amount, behavior: 'smooth' });
+  };
+
+  const handleCardClick = (pick: TopPick) => {
+    if (pick.title === 'Recommendations') {
+      setIsRecommendationModalOpen(true);
+    } else {
+      navigate(pick.route);
+    }
   };
 
   return (
@@ -205,10 +215,10 @@ const TopPicksRow: React.FC<TopPicksRowProps> = ({ profile }) => {
         </button>
         <div className="card-row" ref={rowRef}>
       {topPicks.map((pick, index) => (
-          <div 
-            key={index} 
+          <div
+            key={index}
             className={`pick-card ${pick.cardClassName ?? ''}`}
-            onClick={() => navigate(pick.route)}
+            onClick={() => handleCardClick(pick)}
             style={{ animationDelay: `${index * 0.2}s` }} // Adding delay based on index
           >
             <img
@@ -232,6 +242,10 @@ const TopPicksRow: React.FC<TopPicksRowProps> = ({ profile }) => {
           <FaChevronRight />
         </button>
       </div>
+      <RecommendationModal
+        isOpen={isRecommendationModalOpen}
+        onClose={() => setIsRecommendationModalOpen(false)}
+      />
     </div>
   );
 };
