@@ -70,3 +70,46 @@
   font-weight: bold;
   margin-bottom: 20px;
 }
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .recommendation-card {
+    padding: 20px;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .recommendation-header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .profile-pic {
+    margin: 0 auto 15px;
+  }
+
+  .recommendation-header h3 {
+    font-size: 1.3rem;
+  }
+
+  .recommendation-header p {
+    font-size: 0.85rem;
+  }
+
+  .recommendation-body {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .recommendation-body p {
+    margin-bottom: 12px;
+  }
+
+  .recommendation-body p:first-of-type {
+    font-size: 1rem;
+    margin-bottom: 15px;
+  }
+}

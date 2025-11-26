@@ -168,3 +168,53 @@
     transform: translateY(0);
   }
 }
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .projects-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .project-card {
+    min-height: auto;
+  }
+
+  .project-details {
+    padding: 1.5rem;
+  }
+
+  .project-details h3 {
+    font-size: 1.1rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .project-details p {
+    font-size: 0.88rem;
+    line-height: 1.65;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+    text-align: left;
+  }
+
+  .tech-used {
+    gap: 0.5rem;
+  }
+
+  .tech-badge {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.7rem;
+  }
+
+  .project-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .project-button {
+    width: 100%;
+    justify-content: center;
+  }
+}

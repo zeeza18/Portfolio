@@ -171,3 +171,52 @@
     color: #fff;
   }
 }
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .certifications-grid {
+    grid-template-columns: 1fr;
+    gap: 2rem;
+  }
+
+  .certification-card {
+    padding: 1.25rem;
+  }
+
+  .certification-content h3 {
+    font-size: 1.1rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    line-height: 1.4;
+  }
+
+  .certification-issuer {
+    font-size: 0.9rem;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+  }
+
+  .certification-summary {
+    font-size: 0.85rem;
+    line-height: 1.6;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    hyphens: auto;
+  }
+
+  .certification-topics {
+    gap: 0.35rem;
+  }
+
+  .certification-topic {
+    font-size: 0.68rem;
+    padding: 0.25rem 0.6rem;
+  }
+
+  .certification-media-badge {
+    right: 0.75rem;
+    bottom: 0.75rem;
+    padding: 0.4rem 0.7rem;
+    font-size: 0.7rem;
+  }
+}
