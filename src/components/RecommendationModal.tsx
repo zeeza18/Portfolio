@@ -1,6 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import './RecommendationModal.css';
-import { FaWindowClose, FaExternalLinkAlt } from 'react-icons/fa';
+import { FaExternalLinkAlt } from 'react-icons/fa';
 
 interface RecommendationModalProps {
   isOpen: boolean;
@@ -8,9 +8,12 @@ interface RecommendationModalProps {
 }
 
 const RecommendationModal: React.FC<RecommendationModalProps> = ({ isOpen, onClose }) => {
+  const cardRef = useRef<HTMLDivElement>(null);
+
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
+        e.preventDefault();
         onClose();
       }
     };
@@ -28,24 +31,22 @@ const RecommendationModal: React.FC<RecommendationModalProps> = ({ isOpen, onClo
 
   if (!isOpen) return null;
 
-  const handleBackdropClick = (e: React.MouseEvent<HTMLDivElement>) => {
-    if (e.target === e.currentTarget) {
+  const handleBackdropPointerDown = (e: React.PointerEvent<HTMLDivElement>) => {
+    const target = e.target as Node | null;
+    if (cardRef.current && target && !cardRef.current.contains(target)) {
       onClose();
     }
   };
 
   return (
-    <div className="recommendation-modal-backdrop" onClick={handleBackdropClick}>
-      <div className="recommendation-modal">
-        <button
-          type="button"
-          className="recommendation-modal-close"
-          onClick={onClose}
-          aria-label="Close modal"
-        >
-          <FaWindowClose />
-        </button>
-
+    <div
+      className="recommendation-modal-backdrop"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="recommendation-modal-title"
+      onPointerDown={handleBackdropPointerDown}
+    >
+      <div className="recommendation-modal" ref={cardRef}>
         <div className="recommendation-modal-content">
           <h2 className="recommendation-modal-title">Recommend Me</h2>
 
