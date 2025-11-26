@@ -1,14 +1,14 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './TopPicksRow.css';
-import { FaPassport, FaCode, FaBriefcase, FaCertificate, FaHandsHelping, FaProjectDiagram, FaEnvelope } from 'react-icons/fa';
+import { FaPassport, FaCode, FaBriefcase, FaCertificate, FaHandsHelping, FaProjectDiagram, FaChevronLeft, FaChevronRight, FaFileAlt } from 'react-icons/fa';
 import workPermitApproved from '../images/work-permit-approved.png';
 import skillsSoftHard from '../images/skills-soft-hard.png';
 import experienceImage from '../images/experience.png';
 import certificationsImage from '../images/certifications.jpeg';
 import recommendationsImage from '../images/recommendations.png';
 import projectsImage from '../images/projects.png';
-import contactImage from '../images/contact-me.png';
+import publishImage from '../images/publish.png';
 
 type ProfileType = 'recruiter' | 'developer' | 'stalker';
 
@@ -76,12 +76,12 @@ const topPicksConfig: Record<ProfileType, TopPick[]> = {
       imgStyle: { objectPosition: 'center 55%' },
     },
     {
-      title: "Contact Me",
-      imgSrc: contactImage,
-      icon: <FaEnvelope />,
-      route: "/contact-me",
-      cardClassName: 'pick-card--contact',
-      imgStyle: { objectPosition: 'center 42%' },
+      title: "Publications",
+      imgSrc: publishImage,
+      icon: <FaFileAlt />,
+      route: "/publications",
+      cardClassName: 'pick-card--publications',
+      imgStyle: { objectPosition: 'center 50%' },
     }
   ],
   developer: [
@@ -126,12 +126,12 @@ const topPicksConfig: Record<ProfileType, TopPick[]> = {
       imgStyle: { objectPosition: 'center 48%' },
     },
     {
-      title: "Contact Me",
-      imgSrc: contactImage,
-      route: "/contact-me",
-      icon: <FaEnvelope />,
-      cardClassName: 'pick-card--contact',
-      imgStyle: { objectPosition: 'center 42%' },
+      title: "Publications",
+      imgSrc: publishImage,
+      icon: <FaFileAlt />,
+      route: "/publications",
+      cardClassName: 'pick-card--publications',
+      imgStyle: { objectPosition: 'center 50%' },
     }
   ],
   stalker: [
@@ -142,14 +142,6 @@ const topPicksConfig: Record<ProfileType, TopPick[]> = {
       icon: <FaHandsHelping />,
       cardClassName: 'pick-card--recommendations',
       imgStyle: { objectPosition: 'center 48%' },
-    },
-    {
-      title: "Contact Me",
-      imgSrc: contactImage,
-      route: "/contact-me",
-      icon: <FaEnvelope />,
-      cardClassName: 'pick-card--contact',
-      imgStyle: { objectPosition: 'center 42%' },
     },
     {
       title: "Projects",
@@ -175,6 +167,14 @@ const topPicksConfig: Record<ProfileType, TopPick[]> = {
       cardClassName: 'pick-card--certifications',
       imgStyle: { objectPosition: 'center 52%' },
     },
+    {
+      title: "Publications",
+      imgSrc: publishImage,
+      icon: <FaFileAlt />,
+      route: "/publications",
+      cardClassName: 'pick-card--publications',
+      imgStyle: { objectPosition: 'center 50%' },
+    }
   ],
 };
 
@@ -182,11 +182,28 @@ const topPicksConfig: Record<ProfileType, TopPick[]> = {
 const TopPicksRow: React.FC<TopPicksRowProps> = ({ profile }) => {
   const navigate = useNavigate();
   const topPicks = topPicksConfig[profile];
+  const rowRef = useRef<HTMLDivElement | null>(null);
+
+  const scrollRow = (direction: 'left' | 'right') => {
+    const node = rowRef.current;
+    if (!node) return;
+    const amount = direction === 'left' ? -360 : 360;
+    node.scrollBy({ left: amount, behavior: 'smooth' });
+  };
 
   return (
     <div className="top-picks-row">
       <h2 className="row-title">Today's Top Picks for {profile}</h2>
-      <div className="card-row">
+      <div className="card-row-wrapper">
+        <button
+          type="button"
+          className="card-nav card-nav--left"
+          aria-label="Scroll picks left"
+          onClick={() => scrollRow('left')}
+        >
+          <FaChevronLeft />
+        </button>
+        <div className="card-row" ref={rowRef}>
       {topPicks.map((pick, index) => (
           <div 
             key={index} 
@@ -205,6 +222,15 @@ const TopPicksRow: React.FC<TopPicksRowProps> = ({ profile }) => {
             </div>
           </div>
         ))}
+        </div>
+        <button
+          type="button"
+          className="card-nav card-nav--right"
+          aria-label="Scroll picks right"
+          onClick={() => scrollRow('right')}
+        >
+          <FaChevronRight />
+        </button>
       </div>
     </div>
   );

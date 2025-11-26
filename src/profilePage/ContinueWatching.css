@@ -14,16 +14,61 @@
   margin: 0;
 }
 
+.card-row-wrapper {
+  position: relative;
+  padding: 0 2.75rem;
+}
+
 .card-row {
   display: flex;
   gap: clamp(1rem, 3vw, 1.5rem);
   overflow-x: auto;
-  padding-bottom: 0.75rem;
+  padding: 0 0 0.75rem;
   scrollbar-width: none;
 }
 
 .card-row::-webkit-scrollbar {
   display: none;
+}
+
+.card-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 64px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(180deg, rgba(8, 10, 18, 0.9) 0%, rgba(8, 10, 18, 0.76) 100%);
+  color: #fefefe;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border 0.2s ease, opacity 0.2s ease;
+  z-index: 5;
+  opacity: 0.95;
+}
+
+.card-nav:hover {
+  transform: translateY(-50%) scale(1.05);
+  background: rgba(229, 9, 20, 0.16);
+  border-color: rgba(229, 9, 20, 0.6);
+}
+
+.card-nav:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+.card-nav--left {
+  left: 0.25rem;
+}
+
+.card-nav--right {
+  right: 0.25rem;
 }
 
 .pick-card {
@@ -100,4 +145,22 @@
   letter-spacing: 0.06em;
   color: var(--color-text);
   text-transform: uppercase;
+}
+
+@media (max-width: 768px) {
+  .continue-watching-row {
+    padding: clamp(1rem, 4vw, 1.5rem) clamp(1rem, 4vw, 1.5rem) clamp(1.5rem, 4vw, 2rem);
+  }
+
+  .card-row-wrapper {
+    padding: 0;
+  }
+
+  .card-nav {
+    display: none;
+  }
+
+  .pick-card {
+    width: clamp(160px, 40vw, 220px);
+  }
 }

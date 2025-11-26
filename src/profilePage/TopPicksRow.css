@@ -13,14 +13,59 @@
   color: var(--color-text);
 }
 
+.card-row-wrapper {
+  position: relative;
+  padding: 0 2.75rem;
+}
+
 .card-row {
   display: grid;
   grid-auto-flow: column;
   grid-auto-columns: minmax(240px, 1fr);
   gap: clamp(1rem, 3vw, 1.75rem);
   overflow-x: auto;
-  padding-bottom: 0.75rem;
+  padding: 0 0 0.75rem;
   scrollbar-width: none;
+}
+
+.card-nav {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 44px;
+  height: 64px;
+  border-radius: 18px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: linear-gradient(180deg, rgba(8, 10, 18, 0.9) 0%, rgba(8, 10, 18, 0.76) 100%);
+  color: #fefefe;
+  font-size: 1.1rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(8px);
+  box-shadow: 0 14px 34px rgba(0, 0, 0, 0.35);
+  cursor: pointer;
+  transition: transform 0.2s ease, background 0.2s ease, border 0.2s ease, opacity 0.2s ease;
+  z-index: 5;
+  opacity: 0.95;
+}
+
+.card-nav:hover {
+  transform: translateY(-50%) scale(1.05);
+  background: rgba(229, 9, 20, 0.16);
+  border-color: rgba(229, 9, 20, 0.6);
+}
+
+.card-nav:active {
+  transform: translateY(-50%) scale(0.98);
+}
+
+.card-nav--left {
+  left: 0.25rem;
+}
+
+.card-nav--right {
+  right: 0.25rem;
 }
 
 .card-row::-webkit-scrollbar {
@@ -136,6 +181,15 @@
   opacity: 0.5;
 }
 
+.pick-card--publications .pick-image {
+  filter: brightness(1.06) contrast(1.08) saturate(1.12);
+}
+
+.pick-card--publications::after {
+  background: radial-gradient(62% 58% at 50% 0%, rgba(52, 152, 219, 0.48), transparent 78%);
+  opacity: 0.5;
+}
+
 .pick-image {
   width: 100%;
   height: 100%;
@@ -170,5 +224,17 @@
 @media (max-width: 768px) {
   .pick-card {
     min-height: 200px;
+  }
+
+  .card-nav {
+    display: none;
+  }
+
+  .card-row-wrapper {
+    padding: 0;
+  }
+
+  .top-picks-row {
+    padding: clamp(1rem, 4vw, 1.5rem) clamp(1rem, 4vw, 1.5rem);
   }
 }
