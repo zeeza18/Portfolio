@@ -1,4 +1,4 @@
-﻿import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import './ZeezaPost.css';
 import {
   addZeezaPost,
@@ -158,14 +158,14 @@ const ZeezaPost: React.FC = () => {
   const [posts, setPosts] = useState<ZeezaPostEntry[]>([]);
   const [openMenuId, setOpenMenuId] = useState<string | null>(null);
 
-  const clearForm = () => {
+  const clearForm = useCallback(() => {
     resetFeedback();
     setPostDate(formatInputDate(new Date()));
     setCaption('');
     setMediaFile(null);
     setPreviewUrl(null);
     setDragActive(false);
-  };
+  }, []);
 
   const handleFileSelection = (files: FileList | null) => {
     if (!files || !files.length) {
@@ -229,7 +229,7 @@ const ZeezaPost: React.FC = () => {
         setBusy(false);
       }
     },
-    [mediaFile, caption, postDate]
+    [mediaFile, caption, postDate, clearForm]
   );
 
   useEffect(() => {

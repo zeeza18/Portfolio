@@ -1,4 +1,4 @@
-﻿import { hasDatoCmsCredentials, requestDatoCMS } from './datoCMSClient';
+import { hasDatoCmsCredentials, requestDatoCMS } from './datoCMSClient';
 import { ProfileBanner } from '../types';
 
 const GET_PROFILE_BANNER = `

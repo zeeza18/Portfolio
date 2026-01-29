@@ -1,4 +1,4 @@
-﻿import { deleteMediaBlob, loadMediaBlob, saveMediaBlob } from './zeezaMedia';
+import { deleteMediaBlob, loadMediaBlob, saveMediaBlob } from './zeezaMedia';
 import { db } from '../config/firebase';
 import {
   collection,
