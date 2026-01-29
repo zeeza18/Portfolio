@@ -15,6 +15,55 @@ A cutting-edge, immersive portfolio experience built with React, Firebase, and m
 
 ---
 
+## 🎥 Demo
+
+### Netflix Intro with Audio
+
+
+https://github.com/user-attachments/assets/intro-demo.webm
+
+
+*Experience the authentic Netflix intro animation with sound*
+
+---
+
+## 📸 Screenshots
+
+<div align="center">
+
+### Netflix-Style Intro
+<img src="screenshots/intro.png" alt="Netflix Intro Animation" width="100%">
+
+### Profile Selection - "Who's Watching?"
+<img src="screenshots/profiles.png" alt="Profile Selection Page" width="100%">
+
+### Personalized Dashboard
+<img src="screenshots/dashboard.png" alt="Main Dashboard" width="100%">
+
+</div>
+
+<details>
+<summary><b>View More Screenshots</b></summary>
+
+### Work Experience Timeline
+<img src="screenshots/experience.png" alt="Work Experience Page" width="100%">
+
+### Skills & Expertise
+<img src="screenshots/skills.png" alt="Skills Page" width="100%">
+
+### Projects Showcase
+<img src="screenshots/projects.png" alt="Projects Page" width="100%">
+
+### Certifications
+<img src="screenshots/certifications.png" alt="Certifications Page" width="100%">
+
+### Contact Information
+<img src="screenshots/contact.png" alt="Contact Page" width="100%">
+
+</details>
+
+---
+
 ## ✨ Features
 
 ### 🎬 Netflix-Inspired Design
