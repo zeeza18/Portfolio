@@ -1,47 +1,17 @@
 <div align="center">
 
-# Mohammed Azeezulla - AI Engineer Portfolio
+# Netflix-Inspired Portfolio
 
-### Netflix-Inspired Personal Portfolio
+### Modern Personal Portfolio Web Application
 
-A cutting-edge, immersive portfolio experience built with React, Firebase, and modern web technologies. Features a Netflix-style interface showcasing professional work, projects, skills, and personal moments.
+A cutting-edge, immersive portfolio experience built with React, Firebase, and modern web technologies. Features a Netflix-style interface with animated intro, multi-profile system, and real-time social feed.
 
 [![React](https://img.shields.io/badge/React-18.3.1-61DAFB?style=for-the-badge&logo=react&logoColor=white)](https://reactjs.org/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-4.9.5-3178C6?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 [![Firebase](https://img.shields.io/badge/Firebase-12.6.0-FFCA28?style=for-the-badge&logo=firebase&logoColor=black)](https://firebase.google.com/)
 [![DatoCMS](https://img.shields.io/badge/DatoCMS-GraphQL-FF7751?style=for-the-badge&logo=graphql&logoColor=white)](https://www.datocms.com/)
 
-[Live Demo](https://your-portfolio-url.com) • [LinkedIn](https://www.linkedin.com/in/moazeez/) • [Email](mailto:mmoha134@depaul.edu)
-
 </div>
-
----
-
-## 📸 Screenshots
-
-### Netflix-Style Intro
-<img src="screenshots/01-intro.png" alt="Netflix Intro Animation" width="100%">
-
-### Profile Selection - "Who's Watching?"
-<img src="screenshots/02-browse.png" alt="Profile Selection" width="100%">
-
-### Personalized Dashboard
-<img src="screenshots/03-profile-recruiter.png" alt="Recruiter Profile View" width="100%">
-
-### Work Experience Timeline
-<img src="screenshots/04-work-experience.png" alt="Work Experience" width="100%">
-
-### Skills & Expertise
-<img src="screenshots/05-skills.png" alt="Skills Page" width="100%">
-
-### Projects Showcase
-<img src="screenshots/06-projects.png" alt="Projects" width="100%">
-
-### Certifications
-<img src="screenshots/07-certifications.png" alt="Certifications" width="100%">
-
-### Contact Information
-<img src="screenshots/09-contact.png" alt="Contact Me" width="100%">
 
 ---
 
@@ -61,11 +31,11 @@ Three personalized profiles for different audiences:
 - **Stalker** - Personal content (Social Feed → Reading → Blogs)
 
 ### 💼 Professional Content
-- **Work Experience** - Interactive vertical timeline with 3 major AI/ML roles
-- **Skills Matrix** - 60+ technical, soft, and domain-specific skills with animations
-- **Projects** - 12+ GitHub-integrated projects with live demos and tech stacks
-- **Certifications** - 15+ professional certifications with preview capability
-- **Resume** - Downloadable PDF with work authorization status
+- **Work Experience** - Interactive vertical timeline component
+- **Skills Matrix** - Categorized skills with letter-by-letter animations
+- **Projects** - GitHub-integrated projects with live demos and tech stacks
+- **Certifications** - Certificate grid with preview capability
+- **Contact** - Professional contact information display
 
 ### 📱 Social Feed
 - **Instagram-Style Interface** - Photo and video posts with likes
@@ -155,6 +125,42 @@ Three personalized profiles for different audiences:
    ```bash
    npm run build
    ```
+
+---
+
+## 🍴 Using This Template
+
+This portfolio is designed to be easily customizable for your own use!
+
+### Quick Start for Your Portfolio
+
+1. **Fork this repository** to your GitHub account
+
+2. **Update content** in these key files:
+   - `src/queries/getTimeline.ts` - Your work experience and education
+   - `src/queries/getSkills.ts` - Your skills and expertise
+   - `src/queries/getProjects.ts` - Your projects and GitHub repos
+   - `src/queries/getContactMe.ts` - Your contact information
+   - `src/queries/getProfileBanner.ts` - Hero section content
+
+3. **Replace assets**:
+   - Add your photos to `src/images/`
+   - Update the Netflix sound (or remove it from `NetflixTitle.tsx`)
+   - Add your resume PDF to `public/`
+
+4. **Configure Firebase** (optional for social features):
+   - Create a Firebase project
+   - Enable Firestore and Storage
+   - Add credentials to `.env`
+
+5. **Deploy** to Netlify, Vercel, or your preferred hosting
+
+### Optional: Connect DatoCMS
+
+For dynamic content management without code changes:
+1. Create a DatoCMS account
+2. Set up models for projects, skills, timeline, etc.
+3. Add your API token to `.env`
 
 ---
 
@@ -259,43 +265,19 @@ src/
 
 ---
 
-## 📊 Work Experience Highlights
+## 🎨 Customization
 
-### Current Roles
-- **State Street, USA** - AI Engineer (Oct 2025 - Present)
-  - GenAI investment intelligence with OpenAI & RAG
-  - LangChain vector search for portfolio insights
-  - MLOps deployment with Docker & Kubernetes
+### Update Your Content
 
-- **TekAnthem, USA** - AI Engineer Remote (Jun 2025 - Sep 2025)
-  - Agentic AI testing with CrewAI & Python
-  - Structured extraction pipelines with Azure
-  - Multi-agent automation with 60% efficiency gain
+1. **Work Experience** - Edit `src/queries/getTimeline.ts` to update the fallback timeline data
+2. **Skills** - Modify `src/queries/getSkills.ts` to customize your skills
+3. **Projects** - Update `src/queries/getProjects.ts` with your GitHub projects
+4. **Contact Info** - Edit `src/queries/getContactMe.ts` for your contact details
+5. **Profile Banner** - Update `src/queries/getProfileBanner.ts` for hero section
 
-### Previous Experience
-- **DePaul University** - Graduate Research Assistant & Grader
-- **Soulmi Health** - Associate GenAI Developer
-- **Streebo Inc, India** - Machine Learning Engineer (2021-2023)
+### Add Your Own Data
 
----
-
-## 🎓 Education
-
-- **M.S. in Artificial Intelligence** - DePaul University (2024-2025)
-- **B.E. in Computer Science** - MVJ College of Engineering (2019-2023)
-
----
-
-## 🏆 Skills Overview
-
-### Technical Skills (50+)
-Python • PyTorch • TensorFlow • LangChain • OpenAI • CrewAI • React • TypeScript • Docker • Kubernetes • AWS • GCP • Azure • Spark • Kafka • SQL • MongoDB • Redis
-
-### AI/ML Expertise
-LLMs • RAG • Transformers • Computer Vision • NLP • Reinforcement Learning • Model Deployment • MLOps • Fine-tuning • Vector Databases
-
-### Domain Knowledge
-Financial AI • Healthcare AI • Fraud Detection • Risk Analytics • Agentic Systems • Multimodal AI
+Connect DatoCMS for dynamic content management or use the built-in fallback data system.
 
 ---
 
@@ -347,14 +329,9 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 ---
 
-## 📧 Contact
+## 📧 Questions or Issues?
 
-**Mohammed Azeezulla**
-
-- 🌐 Portfolio: [Your Live URL]
-- 💼 LinkedIn: [linkedin.com/in/moazeez](https://www.linkedin.com/in/moazeez/)
-- 📧 Email: mmoha134@depaul.edu
-- 🐙 GitHub: [@zeeza18](https://github.com/zeeza18)
+Feel free to open an issue or submit a pull request if you find any bugs or have suggestions for improvements.
 
 ---
 
@@ -370,7 +347,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 <div align="center">
 
-**Built with ❤️ by Mohammed Azeezulla**
+**Built with ❤️ using React, TypeScript, and Firebase**
 
 ⭐ Star this repo if you find it helpful!
 
