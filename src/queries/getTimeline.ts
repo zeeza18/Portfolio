@@ -45,19 +45,6 @@ const FALLBACK_TIMELINE: TimelineItem[] = [
   },
   {
     timelineType: 'work',
-    name: 'Soulmi Health - Lombard, IL',
-    title: 'Associate Generative AI Developer',
-    techStack: 'Python | Mistral | spaCy | TypeScript | GCP',
-    summaryPoints: [
-      'Created an intelligent document automation system that processed more than 1,000 insurance mails daily, reducing manual review by 70%.',
-      'Developed multimodal OCR pipelines to detect and redact sensitive content, achieving 90% compliance accuracy.',
-      'Fine-tuned OpenAI models for claims categorization, reaching 90% accuracy with five times faster processing speed.',
-      'Designed analytics dashboards on GCP with Oracle 19c integrations, cutting data access time by 90%.',
-    ],
-    dateRange: 'Jun 2024 - Jan 2025',
-  },
-  {
-    timelineType: 'work',
     name: 'DePaul University - Remote',
     title: 'Grader (Machine Learning and Neural Networks, DSC 445)',
     techStack: 'Python | Scikit-learn | PyTorch | Jupyter',
