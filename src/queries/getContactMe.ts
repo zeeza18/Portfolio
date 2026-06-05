@@ -27,10 +27,10 @@ const FALLBACK_CONTACT: ContactMe = {
   title: 'AI Engineer & Researcher',
   summary:
     'AI engineer and researcher focused on intelligent systems, agentic automation, and translating cutting-edge experimentation into production-ready AI capabilities.',
-  companyUniversity: 'TekAnthem - Chicago, IL',
+  companyUniversity: 'JPMorgan Chase & Co - Chicago, IL',
   linkedinLink: 'https://www.linkedin.com/in/moazeez/',
-  email: 'azeezullamohammedam@gmail.com',
-  secondaryEmail: 'mmoha134@depaul.edu',
+  email: 'mohammedazeezulla1501@gmail.com',
+  secondaryEmail: 'mdazeezulla2020@gmail.com',
   phoneNumber: '+1 (872) 330-2122',
 };
 
