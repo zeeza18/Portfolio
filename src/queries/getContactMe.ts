@@ -30,7 +30,7 @@ const FALLBACK_CONTACT: ContactMe = {
   companyUniversity: 'JPMorgan Chase & Co - Chicago, IL',
   linkedinLink: 'https://www.linkedin.com/in/moazeez/',
   email: 'mohammedazeezulla1501@gmail.com',
-  secondaryEmail: 'mdazeezulla2020@gmail.com',
+  secondaryEmail: 'azeezullamohammedam@gmail.com',
   phoneNumber: '+1 (872) 330-2122',
 };
 
